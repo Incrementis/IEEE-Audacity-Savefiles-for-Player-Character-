@@ -1,0 +1,36 @@
+				EN									DE
+				--									--
+XXXXXXXa.wav	: Battle Cry 1						Schlachtruf 1
+XXXXXXX8.wav	: Battle Cry 2 						Schlachtruf 2
+XXXXXXX9.wav	: Battle Cry 3 						Schlachtruf 3
+XXXXXXg_.wav	: Battle Cry 4 						Schlachtruf 4
+XXXXXXh_.wav	: Battle Cry 5 						Schlachtruf 5
+XXXXXXXb.wav	: Becoming Leader					Anführer werden
+XXXXXXXc.wav	: Tired								Müde
+XXXXXXXd.wav	: Bored								Gelangweilt
+XXXXXXXe.wav	: Badly Wounded						Schwer verwundet
+XXXXXXXf.wav	: Selected 1						Ausgewählt 1
+XXXXXXXg.wav	: Selected 2						Ausgewählt 2
+XXXXXXXh.wav	: Selected 3						Ausgewählt 3
+XXXXXXX0.wav	: Selected 4						Ausgewählt 4
+XXXXXXk_.wav	: Selected 5						Ausgewählt 5
+XXXXXXl_.wav	: Selected 6						Ausgewählt 6
+XXXXXXXi.wav	: Action Acknowledgement 1			Aktionsbestätigung 1
+XXXXXXXj.wav	: Action Acknowledgement 2			Aktionsbestätigung 2
+XXXXXXXk.wav	: Action Acknowledgement 3			Aktionsbestätigung 3
+XXXXXXX0_.wav	: Action Acknowledgement 4			Aktionsbestätigung 4
+XXXXXX1_.wav	: Action Acknowledgement 5			Aktionsbestätigung 5
+XXXXXX2_.wav	: Action Acknowledgement 6 			Aktionsbestätigung 6
+XXXXXX3_.wav	: Action Acknowledgement 7 			Aktionsbestätigung 7
+XXXXXXXs.wav	: BGEE Action Acknowledgement 4 	BGEE Aktionsbestätigung 4	
+XXXXXXXt.wav	: BGEE Action Acknowledgement 5 	BGEE Aktionsbestätigung 5
+XXXXXXXu.wav	: BGEE Action Acknowledgement 6 	BGEE Aktionsbestätigung 6
+XXXXXXXv.wav	: BGEE Action Acknowledgement 7 	BGEE Aktionsbestätigung 7
+XXXXXXXl.wav	: Being Hit							Getroffen werden		
+XXXXXXXm.wav	: Dying								Sterben
+XXXXXXXn.wav	: In Forest							Im Wald
+XXXXXXXo.wav	: In City							In der Stadt		
+XXXXXXXp.wav	: In Dungeon						Im Kerker	
+XXXXXXXq.wav	: Daytime							Tagsüber
+XXXXXXXr.wav	: Nighttime							Nachts
+XXXXXXXw.wav	: Reaction to Party Member Death	Reaktion auf den Tod eines Gruppenmitglieds
