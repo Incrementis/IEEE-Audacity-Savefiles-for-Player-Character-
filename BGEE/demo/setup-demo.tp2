@@ -1,0 +1,112 @@
+BACKUP ~./backup~
+AUTHOR ~Incrementis (incrementis@gmail.com)~
+VERSION ~v0.14.0~
+AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
+
+// Basically allows using tp2 code like in area BEGIN ~modname~
+ALWAYS 
+	// LIBS
+	INCLUDE ~%MOD_FOLDER%/lib/dynArrayFunctionalities.tpa~
+	INCLUDE ~%MOD_FOLDER%/lib/dialogTlkFunctionalities.tpa~	
+	INCLUDE ~%MOD_FOLDER%/lib/fileHandling.tpa~
+	
+	// LANGUAGES
+	ACTION_DEFINE_ARRAY languages BEGIN
+		~English~
+		~German~
+		//~Turkish~
+	END
+	/* POSSIBLY NOT NEEDED!!
+	// EMPTY LANGUAGE .TRA FILES
+	OUTER_FOR (current = 0; VARIABLE_IS_SET $~languages~(~%current%~); ++current)
+	BEGIN
+		OUTER_SPRINT ~language~ $languages(~%current%~)
+		OUTER_SPRINT ~!_filename~ ~./weidu_external/temp/%MOD_FOLDER%/%language%/!_vox.tra~
+		LAM CREATE_FILE
+	END
+	*/
+END// End of "ALWAYS"
+
+LANGUAGE
+	~English~	// Language
+	~English~	// Directory
+//~./weidu_external/temp/%MOD_FOLDER%/English/!_vox.tra~
+
+LANGUAGE
+	~Deutsch~	
+	~German~	
+//~./weidu_external/temp/%MOD_FOLDER%/German/!_vox.tra~
+
+
+
+
+BEGIN ~Vox Demo BG:EE~
+// TODO: replace en_us with ~%LANGUAGE%~ if possible. For this the LANGUAGE section has to be altered?!!
+//COPY ~%MOD_FOLDER%/sounds~ ~lang/en_us/sounds~
+
+// GLOBAL INCLUDES
+INCLUDE ~%MOD_FOLDER%/arrays/DeclareVoxArrays.tpa~
+INCLUDE ~%MOD_FOLDER%/proprietary/CheckTlk.tpa~
+
+// --- MAIN
+OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index) 
+BEGIN
+	// Array elment values
+	OUTER_SPRINT text 	$~!_demoTexts~(~%index%~)
+	OUTER_SPRINT sound 	$~!_demoSoundRefs~(~%index%~)
+	
+	ACTION_IF NOT(~%text%~ STRING_EQUAL ~!_NULL~) THEN
+	BEGIN
+		// Writes the text and sound into the dialog.tlk
+		LAF RESOLVE_STR_REF_WITH_STRINGS
+			STR_VAR
+				voxText 	= ~%text%~
+				voxSound	= ~%sound%~
+			RET
+				stringref = strRef
+		END
+		
+		// Stores the string references to add them later into the specific 2DA file
+		OUTER_SET 		~!_position~ 	= index
+		OUTER_SET 		~!_maxSlots~ 	= slotNumbers
+		OUTER_SPRINT 	~!_useArray~ 	~%refNumberArray%~
+		OUTER_SET 		~!_arrayValue~	= stringref
+		LAM DYN_ARRAY_SET_VALUE
+	END	
+END
+
+
+// TODO: DELETE IT
+OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index) 
+BEGIN
+		
+	OUTER_TEXT_SPRINT test0 $~!_demoTexts~(~%index%~)
+	OUTER_TEXT_SPRINT test1 $~!_demoSoundRefs~(~%index%~)
+	OUTER_TEXT_SPRINT test3 $~!_demoRefNumbers~(~%index%~)
+	PRINT ~%test0% %test1%: %test3%~
+END
+
+// TODO: Tra files erstellen falls nicht bereits vorhanden.
+// Eine Funktion/Macro schreiben die die Tra file für alle Sprachen erstellt
+// Diese Funktion soll auch die Tra files mit Refrenzne füllen @number [soundfile]
+// anschließend kann so in die dialog.tlk geschrieben werden ohne die MEthode RESOLVE_STR_REF_WITH_STRINGS
+// sondern nur mit RESOLVE_STR_REF. ACHTUNG reihenfolge 
+// der Stringrefs muss zu der Reihenfolge der CHARSND.2DA passen!
+
+// TODO: How are the soundfiles chosen for different languages while installing?! NEed to understand!!!
+
+
+//COPY ~%MOD_FOLDER%/Vox/English~ ~lang/en_us/sounds~
+//COPY_EXISTING ~charsnd.2da~ ~override~ 
+
+
+
+
+// TODO: DELETE ALL INLINED FILES! 
+// CLEAR_EVERYTHING could works, alos the own written macro DYN_ARRAY_DELETE_BUFFER!
+/*
+OUTER_SPRINT ~!_deleteArray~ ~%refTextArray%~
+LAM DYN_ARRAY_CLEANUP
+OUTER_SPRINT ~!_deleteArray~ ~%refSoundArray%~
+LAM DYN_ARRAY_CLEANUP
+*/
