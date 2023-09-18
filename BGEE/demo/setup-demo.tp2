@@ -1,59 +1,59 @@
-BACKUP ~./backup~
+// Never Forget: Comments can "lie", but code not so much ;P
+
+// -----------
+// Information
+// -----------
+BACKUP ~./backup~ // %MOD_FOLDER% doesn't work here
 AUTHOR ~Incrementis (incrementis@gmail.com)~
-VERSION ~v0.14.0~
+VERSION ~v0.14.1~
 AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
 
-// Basically allows using tp2 code like in area BEGIN ~modname~
+
+// --------------
+// Initialization
+// --------------
 ALWAYS 
-	// LIBS
+	// LIBRARY INCLUDES(Don't touch these)
+	// -----------------------------------
 	INCLUDE ~%MOD_FOLDER%/lib/dynArrayFunctionalities.tpa~
 	INCLUDE ~%MOD_FOLDER%/lib/dialogTlkFunctionalities.tpa~	
-	INCLUDE ~%MOD_FOLDER%/lib/fileHandling.tpa~
 	
-	// LANGUAGES
-	ACTION_DEFINE_ARRAY languages BEGIN
-		~English~
-		~German~
-		//~Turkish~
-	END
-	/* POSSIBLY NOT NEEDED!!
-	// EMPTY LANGUAGE .TRA FILES
-	OUTER_FOR (current = 0; VARIABLE_IS_SET $~languages~(~%current%~); ++current)
-	BEGIN
-		OUTER_SPRINT ~language~ $languages(~%current%~)
-		OUTER_SPRINT ~!_filename~ ~./weidu_external/temp/%MOD_FOLDER%/%language%/!_vox.tra~
-		LAM CREATE_FILE
-	END
-	*/
 END// End of "ALWAYS"
 
+
+// ---------
+// Languages
+// ---------
 LANGUAGE
 	~English~	// Language
-	~English~	// Directory
-//~./weidu_external/temp/%MOD_FOLDER%/English/!_vox.tra~
-
+	~en_US~		// Directory
 LANGUAGE
 	~Deutsch~	
-	~German~	
-//~./weidu_external/temp/%MOD_FOLDER%/German/!_vox.tra~
+	~de_DE~	
 
 
 
-
+// ---------------------------------------------------
+// Install "IEEE Player Character Voice Installer" Mod
+// ---------------------------------------------------
 BEGIN ~Vox Demo BG:EE~
-// TODO: replace en_us with ~%LANGUAGE%~ if possible. For this the LANGUAGE section has to be altered?!!
-//COPY ~%MOD_FOLDER%/sounds~ ~lang/en_us/sounds~
+// TODO: Activate line of code to copy sound files!
+//COPY ~%MOD_FOLDER%/sounds~ ~lang/%LANGUAGE%/sounds~
 
-// GLOBAL INCLUDES
+
+// GLOBAL INCLUDES(Don't touch these, except commenting out "CheckTlk.tpa")
+// ------------------------------------------------------------------------
 INCLUDE ~%MOD_FOLDER%/arrays/DeclareVoxArrays.tpa~
 INCLUDE ~%MOD_FOLDER%/proprietary/CheckTlk.tpa~
 
-// --- MAIN
+
+// WRITE INTO DIALOG.TLK
+// ---------------------
 OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index) 
 BEGIN
 	// Array elment values
 	OUTER_SPRINT text 	$~!_demoTexts~(~%index%~)
-	OUTER_SPRINT sound 	$~!_demoSoundRefs~(~%index%~)
+	OUTER_SPRINT sound 	$~!_demoSounds~(~%index%~)
 	
 	ACTION_IF NOT(~%text%~ STRING_EQUAL ~!_NULL~) THEN
 	BEGIN
@@ -69,7 +69,7 @@ BEGIN
 		// Stores the string references to add them later into the specific 2DA file
 		OUTER_SET 		~!_position~ 	= index
 		OUTER_SET 		~!_maxSlots~ 	= slotNumbers
-		OUTER_SPRINT 	~!_useArray~ 	~%refNumberArray%~
+		OUTER_SPRINT 	~!_useArray~ 	~%TLKindexArray%~
 		OUTER_SET 		~!_arrayValue~	= stringref
 		LAM DYN_ARRAY_SET_VALUE
 	END	
@@ -81,22 +81,19 @@ OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index)
 BEGIN
 		
 	OUTER_TEXT_SPRINT test0 $~!_demoTexts~(~%index%~)
-	OUTER_TEXT_SPRINT test1 $~!_demoSoundRefs~(~%index%~)
-	OUTER_TEXT_SPRINT test3 $~!_demoRefNumbers~(~%index%~)
+	OUTER_TEXT_SPRINT test1 $~!_demoSounds~(~%index%~)
+	OUTER_TEXT_SPRINT test3 $~!_demoTLKindex~(~%index%~)
 	PRINT ~%test0% %test1%: %test3%~
 END
 
-// TODO: Tra files erstellen falls nicht bereits vorhanden.
-// Eine Funktion/Macro schreiben die die Tra file für alle Sprachen erstellt
-// Diese Funktion soll auch die Tra files mit Refrenzne füllen @number [soundfile]
+// TODO:
 // anschließend kann so in die dialog.tlk geschrieben werden ohne die MEthode RESOLVE_STR_REF_WITH_STRINGS
 // sondern nur mit RESOLVE_STR_REF. ACHTUNG reihenfolge 
 // der Stringrefs muss zu der Reihenfolge der CHARSND.2DA passen!
 
 // TODO: How are the soundfiles chosen for different languages while installing?! NEed to understand!!!
 
-
-//COPY ~%MOD_FOLDER%/Vox/English~ ~lang/en_us/sounds~
+// TODO: Activate line
 //COPY_EXISTING ~charsnd.2da~ ~override~ 
 
 

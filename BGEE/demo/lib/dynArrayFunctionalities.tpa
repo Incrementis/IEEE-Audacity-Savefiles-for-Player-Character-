@@ -6,8 +6,7 @@
 
 
 // ---DEFAULT/INIT ARGUMENTS(Don't change these!)
-// USAGE: 	Copy those variables 1 to 1 to somewhere else where you need them 
-// 			and change their values before calling immediately macro!!!
+// USAGE: 	Copy these variables to another location and change their values before calling the macro.
 //			This macro can not be used in patching.
 OUTER_SET 		~!_slotNumbers~ 	= 0
 OUTER_SPRINT 	~!_setArrayName~	~!_NULL~
@@ -46,22 +45,19 @@ BEGIN
 	COPY ~./weidu_external/temp/!_temporaryArrayBuffer.tph~ ~./weidu_external/temp/arrays/values/!_%!_setArrayName%Buffer.tph~
 	COPY ~./weidu_external/temp/!_temporaryPatchArrayBuffer.tph~ ~./weidu_external/temp/arrays/values/!_patch%!_setArrayName%Buffer.tph~
 
-	// --- START: Creates an inline file which content is needed to define the dynamic array. 
+	// Creates an inline file which content is needed to define the dynamic array. 
 	<<<<<<<<./weidu_external/temp/!_temporaryArray.tpa
 	DEFINE_ACTION_MACRO ~!_%!_setArrayName%~ 
 	BEGIN
 	ACTION_DEFINE_ARRAY ~%!_setArrayName%~ BEGIN >>>>>>>>
-	// --- END
 	
-	// --- START: Creates an inline file which content is needed to define the dynamic patch array. 
+	// Creates an inline file which content is needed to define the dynamic patch array. 
 	<<<<<<<<./weidu_external/temp/!_temporaryPatchArray.tpa
 	DEFINE_PATCH_MACRO ~!_%!_setArrayName%~ 
 	BEGIN
 	PATCH_DEFINE_ARRAY ~%!_setArrayName%~ BEGIN >>>>>>>>
-	// --- END
 	
-	// Makes sure that "!_temporaryArray" and "!_temporaryPatchArray" can be reused for another array
-	// by writing their content in another dynamic named files.
+	// Copies the content of the temporary arrays to dynamic named files so that they can be reused for another array
 	COPY ~./weidu_external/temp/!_temporaryArray.tpa~ ~./weidu_external/temp/arrays/!_%!_setArrayName%.tpa~  EVALUATE_BUFFER
 	COPY ~./weidu_external/temp/!_temporaryPatchArray.tpa~ ~./weidu_external/temp/arrays/!_patch%!_setArrayName%.tpa~  EVALUATE_BUFFER
 	
@@ -100,7 +96,8 @@ DEFINE_DIMORPHIC_FUNCTION DYN_ARRAY_PREPARE_STR_VALUE
 		prepArray		= ~!_NULL~
 		strArrayValue 	= ~!_NULL~
 BEGIN
-	// Corrects number of elements to slot index
+	// Corrects the number of elements to a slot index by subtracting 1,
+	// since the first slot index is 0.
 	OUTER_SET maxSlots = maxSlots - 1
 	
 	// Checks if an array name is not given
@@ -121,9 +118,11 @@ BEGIN
 		FAIL ~DEFINE_DIMORPHIC_FUNCTION DYN_ARRAY_PREPARE_STR_VALUE %prepArray% -> The correct maxSlots as an argument is missing. The maxSlots value is %maxSlots%, but must be greater than -1 and greater %position%!~
 	END
 
-	// Appends OUTER value into file
+	// Appends the OUTER value to the buffer file for the specified array.
+	// The OUTER value is the value that will be used by WeiDU when the array is accessed.
 	APPEND_OUTER ~./weidu_external/temp/arrays/values/!_%prepArray%Buffer.tph~ ~~~~~OUTER_SPRINT ~%prepArray%%position%~ ~%strArrayValue%~ ~~~~~
-	// Appends PATCH value into file
+	// Appends the PATCH value to the buffer file for the specified array.
+	// The PATCH value is the value that will be used to patch the array in the game.
 	APPEND_OUTER ~./weidu_external/temp/arrays/values/!_patch%prepArray%Buffer.tph~ ~~~~~SPRINT ~%prepArray%%position%~ ~%strArrayValue%~ ~~~~~
 	
 END// End of "DYN_ARRAY_PREPARE_STR_VALUE"
@@ -164,9 +163,13 @@ BEGIN
 		FAIL ~DEFINE_DIMORPHIC_FUNCTION DYN_ARRAY_PREPARE_INT_VALUE %prepArray% -> The correct maxSlots as an argument is missing. The maxSlots value is %maxSlots%, but must be greater than -1 and greater %position%!~
 	END
 
-	// Appends OUTER value into file ("" is needed or else it won't work)
+	// // Appends the OUTER value to the buffer file for the specified array.
+	// The OUTER value is the value that will be used by WeiDU when the array is accessed.
+	// The quotes around %intArrayValue% are necessary to ensure that the value is written as a string.
 	APPEND_OUTER ~./weidu_external/temp/arrays/values/!_%prepArray%Buffer.tph~ ~~~~~OUTER_SET ~%prepArray%%position%~ = "%intArrayValue%" ~~~~~
-	// Appends PATCH value into file
+	// Appends the PATCH value to the buffer file for the specified array.
+	// The PATCH value is the value that will be used to patch the array in the game.
+	// The quotes around %intArrayValue% are necessary to ensure that the value is written as a string.
 	APPEND_OUTER ~./weidu_external/temp/arrays/values/!_patch%prepArray%Buffer.tph~ ~~~~~SET ~%prepArray%%position%~ = "%intArrayValue%" ~~~~~
 	
 END// End of "DYN_ARRAY_PREPARE_INT_VALUE"
@@ -174,8 +177,7 @@ END// End of "DYN_ARRAY_PREPARE_INT_VALUE"
 
 
 // ---DEFAULT/INIT ARGUMENTS(Don't change these!)
-// USAGE: 	Copy those variables 1 to 1 to somewhere else where you need them 
-// 			and change their values before calling immediately macro!!!
+// USAGE: 	Copy these variables to another location and change their values before calling the macro.
 //			It is important to note that this macro has a patch version.
 OUTER_SET 		~!_position~ =	"-1"
 OUTER_SET 		~!_maxSlots~ =	"-1"
@@ -200,8 +202,8 @@ BEGIN
  	// INTEGER/STRING 	~!_arrayValue~	~!_NULL~
 	// ----------------------------------------------
 	
-	// Checks if array value is integer and 
-	// creates an inline file which contains abstract array element information
+	// Checks if the array value is an integer and calls the appropriate function
+	// to prepare the abstract array element information.
 	ACTION_IF (IS_AN_INT ~%!_arrayValue%~) THEN 
 	BEGIN
 		LAF DYN_ARRAY_PREPARE_INT_VALUE
@@ -226,7 +228,7 @@ BEGIN
 		
 	END
 	
-	// Set all the stored information in buffer in array
+	// Reads the buffer file for the specified array and loads the new value into dyn array.
 	REINCLUDE ~./weidu_external/temp/arrays/values/!_%!_useArray%Buffer.tph~
 	LAM ~!_%!_useArray%~
 	
@@ -235,8 +237,7 @@ END// End of "DYN_ARRAY_SET_VALUE"
 
 
 // ---DEFAULT/INIT ARGUMENTS(Don't change these!)
-// USAGE: 	Copy those commented SET variables 1 to 1 to somewhere else where you need them 
-// 			and change their values before calling immediately macro!!!
+// USAGE: 	Copy the commented SET variables to another location and change their values before calling the macro.
 //			It is important to note that this macro has a outer version.
 // SET 		~!_position~ =	"-1"
 // SET 		~!_maxSlots~ =	"-1"
@@ -261,6 +262,8 @@ BEGIN
  	// INTEGER/STRING 	~!_arrayValue~	~!_NULL~
 	// ----------------------------------------------
 	
+	// Checks if the array value is an integer and calls the appropriate function
+	// to prepare the abstract array element information.
 	PATCH_IF (IS_AN_INT ~%!_arrayValue%~) THEN 
 	BEGIN 	
 		LPF DYN_ARRAY_PREPARE_INT_VALUE
@@ -285,7 +288,7 @@ BEGIN
 		
 	END
 	
-	// Set all the stored information in patch buffer in array
+	// Reads the buffer file for the specified array and loads the new value into dynamic array.
 	PATCH_REINCLUDE ~./weidu_external/temp/arrays/values/!_patch%!_useArray%Buffer.tph~
 	LPM ~!_%!_useArray%~
 	
@@ -317,13 +320,13 @@ BEGIN
 	LOCAL_SPRINT outerArrayFilename 	~./weidu_external/temp/arrays/!_%!_deleteArray%.tpa~
 	LOCAL_SPRINT patchArrayFilename 	~./weidu_external/temp/arrays/!_patch%!_deleteArray%.tpa~
 
-	// Checks if an array name is not given
+	// The macro fails if no array name is given because it needs to know which array to delete the files for.
 	ACTION_IF (~%!_deleteArray%~ STRING_EQUAL ~!_NULL~) THEN 
 	BEGIN
 		FAIL ~DEFINE_ACTION_MACRO DYN_ARRAY_CLEAR_BUFFER -> The correct array name as an argument is missing. The array name !_NULL is forbidden.~
 	END
 		
-	// Deleting array buffer files
+	// Deletes the buffer files for the specified array.
 	ACTION_IF(FILE_EXISTS ~%outerBufferFilename%~) THEN
 	BEGIN
 		DELETE ~%outerBufferFilename%~
@@ -340,7 +343,7 @@ BEGIN
 		WARN ~DEFINE_ACTION_MACRO DYN_ARRAY_CLEANUP -> Couldn't find and delete %patchBufferFilename%!~
 	END
 	
-	// Deleting array definition files
+	// Deletes the definition files for the specified array.
 	ACTION_IF(FILE_EXISTS ~%outerArrayFilename%~) THEN
 	BEGIN
 		DELETE ~%outerArrayFilename%~

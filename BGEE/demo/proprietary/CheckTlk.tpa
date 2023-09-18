@@ -7,7 +7,7 @@ END
 PRINT ~tlkCheck.tpa -> highest_strref: %highest_strref%~
 
 
-// --- MAIN
+// ---CHECK DIALOG.TLK
 //TODO: start_strref depends on game!
 OUTER_SET start_strref 	= 71400
 OUTER_SET strref 		= start_strref
@@ -20,72 +20,70 @@ ALTER_TLK_RANGE start_strref highest_strref BEGIN
 	// TODO: DELETE IT!
 	//PATCH_PRINT ~%refText% [%refSound%]~
 	
-	// Loops over arrays
+	// Loops over arrays checks if current string reference values are already in dialog.tlk
 	FOR(index=0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index)
 	BEGIN
 		SPRINT arrText 		$~!_demoTexts~(~%index%~)
 		SPRINT arrSound 	$~!_demoSoundRefs~(~%index%~)
 		
-		//PATCH_PRINT ~%arrText% [%arrSound%]~
-		
 		// Text and sound references already existing
 		PATCH_IF(~%refSound%~ STRING_EQUAL ~%arrSound%~) AND 
 				(~%refText%~ STRING_EQUAL ~%arrText%~) THEN
 		BEGIN			
-			// Setting all dyn array values to !_NULL	
+			// Sets all dyn array values to !_NULL	
 			SET 		~!_position~ =	index
 			SET 		~!_maxSlots~ =	slotNumbers
 			SPRINT 		~!_useArray~ 	~%refTextArray%~
 			SPRINT 		~!_arrayValue~	~!_NULL~
 			LPM DYN_ARRAY_SET_VALUE
-					
+			// Sets all dyn array values to !_NULL		
 			SET 		~!_position~ =	index
 			SET 		~!_maxSlots~ =	slotNumbers
 			SPRINT 		~!_useArray~ 	~%refSoundArray%~
 			SPRINT 		~!_arrayValue~	~!_NULL~
 			LPM DYN_ARRAY_SET_VALUE
-			
+			// Writes current string reference value into array
 			SET 		~!_position~ 	= index
 			SET 		~!_maxSlots~ 	= slotNumbers
-			SPRINT 		~!_useArray~ 	~%refNumberArray%~
+			SPRINT 		~!_useArray~ 	~%TLKindexArray%~
 			SET 		~!_arrayValue~ 	= strref
 			LPM DYN_ARRAY_SET_VALUE
 							
-			PATCH_PRINT ~References for "%arrText%[%arrSound%]" in dialog.tlk are already exsiting on position %ref%~			
+			PATCH_PRINT ~References for "%arrText%[%arrSound%]" in dialog.tlk are already exsiting on position %strref%~			
 		END 
 		// Sound reference already existing, but text is not fitting.
 		ELSE PATCH_IF (~%refSound%~ STRING_EQUAL ~%arrSound%~) AND NOT 
 				 (~%refText%~ STRING_EQUAL ~%arrText%~) AND NOT
 				 (~%arrText%~ STRING_EQUAL ~!_NULL~)THEN
 		BEGIN
-			// Will replace referenced text in dialog.tlk with the array text
+			// Replaces referenced text in dialog.tlk with the array text
 			REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~%refText%~ ~%arrText%~
 			
-			// Setting all dyn array values to !_NULL	
+			// Sets all dyn array values to !_NULL	
 			SET 		~!_position~ =	index
 			SET 		~!_maxSlots~ =	slotNumbers
 			SPRINT 		~!_useArray~ 	~%refTextArray%~
 			SPRINT 		~!_arrayValue~	~!_NULL~
 			LPM DYN_ARRAY_SET_VALUE
-		
+			// Sets all dyn array values to !_NULL	
 			SET 		~!_position~ =	index
 			SET 		~!_maxSlots~ =	slotNumbers
 			SPRINT 		~!_useArray~ 	~%refSoundArray%~
 			SPRINT 		~!_arrayValue~	~!_NULL~
 			LPM DYN_ARRAY_SET_VALUE
-			
+			// Writes current string reference value into array
 			SET 		~!_position~ 	= index
 			SET 		~!_maxSlots~ 	= slotNumbers
-			SPRINT 		~!_useArray~ 	~%refNumberArray%~
+			SPRINT 		~!_useArray~ 	~%TLKindexArray%~
 			SET 		~!_arrayValue~ 	= strref
 			LPM DYN_ARRAY_SET_VALUE
 							
-			PATCH_PRINT ~Correcting "%refText%" to "%arrText%" in dialog.tlk on position %ref%~			
+			PATCH_PRINT ~Correcting "%refText%" to "%arrText%" in dialog.tlk on position %strref%~			
 		END	
 		
 	END // End of "FOR"
 	
-	// Increases with every iteration. Values is equal to current string reference.
+	// Increases with every iteration. Value before is equal to current string reference.
 	SET strref = strref+1
 	
 END // End of "ALTER_TLK_RANGE"

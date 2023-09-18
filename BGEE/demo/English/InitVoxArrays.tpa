@@ -4,10 +4,10 @@ OUTER_SPRINT ~!_demoTexts1~ ~Battle Cry 2~ // !_DEMO8
 OUTER_SPRINT ~!_demoTexts2~ ~Battle Cry 3~ // !_DEMO9
 LAM ~!_!_demoTexts~ // Prefix "!_" is essential
 // ---INITIALIZE DYN ARRAY
-OUTER_SPRINT ~!_demoSoundRefs0~ ~!_DEMOa~
-OUTER_SPRINT ~!_demoSoundRefs1~ ~!_DEMO8~
-OUTER_SPRINT ~!_demoSoundRefs2~ ~!_DEMO9~
-LAM ~!_!_demoSoundRefs~ // Prefix "!_" is essential
+OUTER_SPRINT ~!_demoSounds0~ ~!_DEMOa~
+OUTER_SPRINT ~!_demoSounds1~ ~!_DEMO8~
+OUTER_SPRINT ~!_demoSounds2~ ~!_DEMO9~
+LAM ~!_!_demoSounds~ // Prefix "!_" is essential
 
 // ----------------------------------------------------------
 // ---SHOW DYN ARRAY -> DELETE IT
@@ -16,7 +16,7 @@ OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index)
 BEGIN
 		
 	OUTER_TEXT_SPRINT test0 $~!_demoTexts~(~%index%~)
-	OUTER_TEXT_SPRINT test1 $~!_demoSoundRefs~(~%index%~)
-	OUTER_TEXT_SPRINT test3 $~!_demoRefNumbers~(~%index%~)
+	OUTER_TEXT_SPRINT test1 $~!_demoSounds~(~%index%~)
+	OUTER_TEXT_SPRINT test3 $~!_demoTLKindex~(~%index%~)
 	PRINT ~INIT VALUES: %test0% %test1%: %test3%~
 END

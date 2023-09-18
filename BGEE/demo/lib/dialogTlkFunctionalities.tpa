@@ -5,9 +5,9 @@
 
 
 
-// Purpose: Works like RESOLVE_STR_REF, but does so by taking only string values
-// 			for resolving text and soundfile name.
-// ------------------------------------------------------------------------------
+// Purpose: like RESOLVE_STR_REF, but takes only string values to resolve text 
+// 			and soundfile names.
+// ---------------------------------------------------------------------------
 // Parameters:|
 // ============
 // voxText 	-> The Text found in dialog.tlk
@@ -20,19 +20,19 @@ DEFINE_DIMORPHIC_FUNCTION RESOLVE_STR_REF_WITH_STRINGS
 	RET
 		strRef
 BEGIN
-	// Checks if a proper voxText is given	
+	// Checks if a valid voxText is given
 	ACTION_IF (~%voxText%~ STRING_EQUAL ~!_NULL~) THEN 
 	BEGIN
 		FAIL ~DEFINE_DIMORPHIC_FUNCTION RESOLVE_STR_REF_WITH_STRINGS -> The correct argument for voxText is missing. The argument !_NULL is forbidden.~
 	END
-	// Checks if a proper voxSound is given
+	// Checks if a valid voxSound is given
 	ACTION_IF (~%voxSound%~ STRING_EQUAL ~!_NULL~) THEN 
 	BEGIN
 		FAIL ~DEFINE_DIMORPHIC_FUNCTION RESOLVE_STR_REF_WITH_STRINGS -> The correct argument for voxSound is missing. The argument !_NULL is forbidden.~
 	END
 	
-	// Core part of this function. This part takes the string parameters 
-	// and uses them as allowed in RESOLVE_STR_REF.
+	// Core part of this function. This part takes the string parameters  
+	// and uses them in the same way as RESOLVE_STR_REF.
 	<<<<<<<<./weidu_external/temp/!_TemporaryResolveStrRef.tpa
 	OUTER_SET strRef = RESOLVE_STR_REF(~%voxText%~ [%voxSound%])
 	>>>>>>>>
@@ -47,7 +47,7 @@ END// End of "RESOLVE_STR_REF_WITH_STRINGS"
 // -------------------------------------------------------------------------------
 // Parameters:|
 // ============
-// strRef -> highest string reference value in dialog.tlk
+// strRef -> Gets the highest strref value in dialog.tlk
 DEFINE_DIMORPHIC_FUNCTION HIGHEST_STR_REF_BY_COUNTING
 	RET
 		strRef
@@ -58,7 +58,7 @@ BEGIN
 	ALTER_TLK BEGIN	
 		SET strRef = strRef+1
 	END
-	// Reducing the value by 1, to get correct value 
+	// Reducing the value by 1, since the last counting increases the value too much.
 	OUTER_SET strRef = strRef - 1
 	
 END// End of "HIGHEST_STR_REF_BY_COUNTING"

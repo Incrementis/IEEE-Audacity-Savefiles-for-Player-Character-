@@ -1,33 +1,35 @@
 OUTER_SET slotNumbers = 3
+OUTER_SET nameNumbers = 2
 // TODO: Are those varibales really needed? Used in tlkCheck.tpa. 
 // Possibly Yes as the name can be changed here without changing everywhere else!!!!!
-OUTER_SPRINT refTextArray 	~!_demoTexts~
-OUTER_SPRINT refSoundArray 	~!_demoSoundRefs~
-OUTER_SPRINT refNumberArray ~!_demoRefNumbers~
+OUTER_SPRINT refTextArray 		~!_demoTexts~
+OUTER_SPRINT refSoundArray 		~!_demoSounds~
+OUTER_SPRINT TLKindexArray 		~!_demoTLKindex~ 
+OUTER_SPRINT voxNameArray 		~!_demoVoxNames~ //TODO: ARRAY
 // ---DECLARE DYN ARRAY FOR TEXT
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
-OUTER_SPRINT 	~!_setArrayName~	~!_demoTexts~
+OUTER_SPRINT 	~!_setArrayName~	~%refTextArray%~
 LAM DYN_ARRAY_CREATE
 // ---DECLARE DYN ARRAY FOR SOUND
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
-OUTER_SPRINT 	~!_setArrayName~	~!_demoSoundRefs~
+OUTER_SPRINT 	~!_setArrayName~	~%refSoundArray%~
 LAM DYN_ARRAY_CREATE
 // ---DECLARE DYN ARRAY FOR REF-NUMBERS
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
-OUTER_SPRINT 	~!_setArrayName~	~!_demoRefNumbers~
+OUTER_SPRINT 	~!_setArrayName~	~%TLKindexArray%~
 LAM DYN_ARRAY_CREATE
 
 // ---INITIALIZE DYN ARRAY
-// ~%LANGUAGE%~ seems like a WeiDU internal constant, but can not be found in doc?!
-ACTION_IF (~%LANGUAGE%~ STRING_EQUAL ~English~) THEN
+// TODO: ~%LANGUAGE%~ seems like a WeiDU internal constant, but can not be found in doc?!
+ACTION_IF (~%LANGUAGE%~ STRING_EQUAL ~en_US~) THEN
 BEGIN
 	INCLUDE ~%MOD_FOLDER%/English/InitVoxArrays.tpa~
 	// TODO: DELETE IT!
-	PRINT ~SoundAndText.tpa -> %LANGUAGE%~
+	PRINT ~DeclareVoxArrays.tpa -> %LANGUAGE%~
 END 
-ELSE ACTION_IF (~%LANGUAGE%~ STRING_EQUAL ~German~) THEN
+ELSE ACTION_IF (~%LANGUAGE%~ STRING_EQUAL ~de_DE~) THEN
 BEGIN
 	INCLUDE ~%MOD_FOLDER%/German/InitVoxArrays.tpa~
 	// TODO: DELETE IT!
-	PRINT ~SoundAndText.tpa -> %LANGUAGE%~
+	PRINT ~DeclareVoxArrays.tpa -> %LANGUAGE%~
 END
