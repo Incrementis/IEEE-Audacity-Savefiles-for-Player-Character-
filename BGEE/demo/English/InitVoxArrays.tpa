@@ -10,7 +10,7 @@ LAM ~!_!_demoTexts~ // Prefix "!_" is essential
 OUTER_SPRINT ~!_demoVoxNames0~ ~DEMOM~
 OUTER_SPRINT ~!_demoVoxNames1~ ~DEMOF~
 LAM ~!_!_demoVoxNames~ // Prefix "!_" is essential
-// ---INITIALIZE DYN ARRAY
+// ---INITIALIZE DYN ARRAY SOUND
 OUTER_SPRINT ~!_demoSounds0~ ~!_DEMOMa~
 OUTER_SPRINT ~!_demoSounds1~ ~!_DEMOM8~
 OUTER_SPRINT ~!_demoSounds2~ ~!_DEMOM9~
