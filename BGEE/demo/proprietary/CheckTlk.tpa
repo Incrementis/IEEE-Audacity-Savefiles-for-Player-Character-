@@ -37,11 +37,11 @@ ALTER_TLK_RANGE start_strref highest_strref BEGIN
 			SPRINT 		~!_arrayValue~	~!_NULL~
 			LPM DYN_ARRAY_SET_VALUE
 			// Sets all dyn array values to !_NULL		
-			SET 		~!_position~ =	index
+			/*SET 		~!_position~ =	index
 			SET 		~!_maxSlots~ =	slotNumbers
 			SPRINT 		~!_useArray~ 	~%refSoundArray%~
 			SPRINT 		~!_arrayValue~	~!_NULL~
-			LPM DYN_ARRAY_SET_VALUE
+			LPM DYN_ARRAY_SET_VALUE*/
 			// Writes current string reference value into array
 			SET 		~!_position~ 	= index
 			SET 		~!_maxSlots~ 	= slotNumbers
@@ -66,11 +66,11 @@ ALTER_TLK_RANGE start_strref highest_strref BEGIN
 			SPRINT 		~!_arrayValue~	~!_NULL~
 			LPM DYN_ARRAY_SET_VALUE
 			// Sets all dyn array values to !_NULL	
-			SET 		~!_position~ =	index
+			/*SET 		~!_position~ =	index
 			SET 		~!_maxSlots~ =	slotNumbers
 			SPRINT 		~!_useArray~ 	~%refSoundArray%~
 			SPRINT 		~!_arrayValue~	~!_NULL~
-			LPM DYN_ARRAY_SET_VALUE
+			LPM DYN_ARRAY_SET_VALUE*/
 			// Writes current string reference value into array
 			SET 		~!_position~ 	= index
 			SET 		~!_maxSlots~ 	= slotNumbers

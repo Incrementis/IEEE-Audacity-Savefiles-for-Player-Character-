@@ -1,13 +1,31 @@
-// ---INITIALIZE DYN ARRAY
-OUTER_SPRINT ~!_demoTexts0~ ~Schlachtruf 1~ // !_DEMOa
-OUTER_SPRINT ~!_demoTexts1~ ~Schlachtruf 2~ // !_DEMO8
-OUTER_SPRINT ~!_demoTexts2~ ~Schlachtruf 3~ // !_DEMO9
+// ---INITIALIZE DYN ARRAY TEXTS
+OUTER_SPRINT ~!_demoTexts0~ ~Schlachtruf 1~ // !_DEMOMa
+OUTER_SPRINT ~!_demoTexts1~ ~Schlachtruf 2~ // !_DEMOM8
+OUTER_SPRINT ~!_demoTexts2~ ~Schlachtruf 3~ // !_DEMOM9
+// Second vox
+OUTER_SPRINT ~!_demoTexts3~ ~Anführer werden~ 	// !_DEMOFb
+OUTER_SPRINT ~!_demoTexts4~ ~Ausgewählt 1~ 		// !_DEMOFf
 LAM ~!_!_demoTexts~ // Prefix "!_" is essential
-// ---INITIALIZE DYN ARRAY
-OUTER_SPRINT ~!_demoSounds0~ ~!_DEMOa~
-OUTER_SPRINT ~!_demoSounds1~ ~!_DEMO8~
-OUTER_SPRINT ~!_demoSounds2~ ~!_DEMO9~
+// ---INITIALIZE DYN ARRAY NAMES
+OUTER_SPRINT ~!_demoVoxNames0~ ~DEMOM~
+OUTER_SPRINT ~!_demoVoxNames1~ ~DEMOF~
+LAM ~!_!_demoVoxNames~ // Prefix "!_" is essential
+// ---INITIALIZE DYN ARRAY SOUND
+OUTER_SPRINT ~!_demoSounds0~ ~!_DEMOMa~
+OUTER_SPRINT ~!_demoSounds1~ ~!_DEMOM8~
+OUTER_SPRINT ~!_demoSounds2~ ~!_DEMOM9~
+// Second vox
+OUTER_SPRINT ~!_demoSounds3~ ~!_DEMOFb~
+OUTER_SPRINT ~!_demoSounds4~ ~!_DEMOFf~
 LAM ~!_!_demoSounds~ // Prefix "!_" is essential
+// ---INITIALIZE DYN ARRAY POSITION
+OUTER_SET ~!_demoPositions0~ = 9
+OUTER_SET ~!_demoPositions1~ = 10
+OUTER_SET ~!_demoPositions2~ = 11
+// Second vox
+OUTER_SET ~!_demoPositions3~ = 6
+OUTER_SET ~!_demoPositions4~ = 26
+LAM ~!_!_demoPositions~ // Prefix "!_" is essential
 
 // ----------------------------------------------------------
 // ---SHOW DYN ARRAY

@@ -1,5 +1,4 @@
 // Never Forget: Comments can "lie", but code not so much ;P
-
 // -----------
 // Information
 // -----------
@@ -32,6 +31,9 @@ LANGUAGE
 	~de_DE~	
 
 
+//TODO: Woher weiß das system welcher NAme zu welchem sound und string gehört?
+//Evtl.lässt sich das anhand des soundnamen ermitteln?!
+
 
 // ---------------------------------------------------
 // Install "IEEE Player Character Voice Installer" Mod
@@ -46,7 +48,24 @@ BEGIN ~Vox Demo BG:EE~
 INCLUDE ~%MOD_FOLDER%/arrays/DeclareVoxArrays.tpa~
 INCLUDE ~%MOD_FOLDER%/proprietary/CheckTlk.tpa~
 
+/*
+// TODO: Needed for later
+OUTER_TEXT_SPRINT s $~!_demoSounds~(0)
+OUTER_TEXT_SPRINT n $~!_demoVoxNames~(0)
 
+ACTION_IF INDEX (CASE_SENSITIVE EXACT_MATCH ~%s%~ ~%n%~) != "-1" BEGIN
+	//OUTER_SPRINT t EXACT_MATCH ~%n%~ ~%s%~
+	OUTER_SET ind = INDEX (~%n%~ ~%s%~)
+
+
+	PRINT ~sound: %s%~
+	PRINT ~name: %n%~
+	//OUTER_TEXT_SPRINT MATCH EXACT_MATCH ~%n%~ ~%s%~
+	PRINT ~INDEX: %ind%~
+END
+*/
+
+/*
 // WRITE INTO DIALOG.TLK
 // ---------------------
 OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index) 
@@ -80,11 +99,28 @@ END
 OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index) 
 BEGIN
 		
-	OUTER_TEXT_SPRINT test0 $~!_demoTexts~(~%index%~)
-	OUTER_TEXT_SPRINT test1 $~!_demoSounds~(~%index%~)
-	OUTER_TEXT_SPRINT test3 $~!_demoTLKindex~(~%index%~)
-	PRINT ~%test0% %test1%: %test3%~
+	OUTER_TEXT_SPRINT 	test0 $~!_demoTexts~(~%index%~)
+	OUTER_TEXT_SPRINT 	test1 $~!_demoSounds~(~%index%~)
+	OUTER_TEXT_SPRINT 	test3 $~!_demoTLKindex~(~%index%~)
+	OUTER_SET 			test4 = $~!_demoPositions~(~%index%~)
+	PRINT ~%test0% %test1%: %test3% in Position: %test4%~
 END
+*/
+// TODO: write into "charsnd.2DA"
+
+// REIHENFOLGE RELEVANT
+APPEND_COL_OUTER ~./%MOD_FOLDER%/CHARSUND.2DA~ "$ $ DEMO -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
+COPY ~./%MOD_FOLDER%/CHARSUND.2DA~ ~./%MOD_FOLDER%/temp/CHARSUND.2DA~
+PRETTY_PRINT_2DA
+
+// Ab hier endet das Patching, warum auch immer...
+COUNT_2DA_COLS maxCols2DA
+PRINT ~cols: %maxCols2DA%~
+OUTER_SET maxCols = maxCols2DA - 1 
+
+// "ROW"---"COLUMN"---"REQUIRED COLUMN COUNT"---"VALUE TO ENTRY"
+COPY ~./%MOD_FOLDER%/temp/CHARSUND.2DA~ ~./%MOD_FOLDER%/temp/CHARSUND.2DA~
+SET_2DA_ENTRY 3 ~%maxCols%~ ~%maxCols%~ ~123~
 
 // TODO:
 // anschließend kann so in die dialog.tlk geschrieben werden ohne die MEthode RESOLVE_STR_REF_WITH_STRINGS
@@ -95,8 +131,6 @@ END
 
 // TODO: Activate line
 //COPY_EXISTING ~charsnd.2da~ ~override~ 
-
-
 
 
 // TODO: DELETE ALL INLINED FILES! 

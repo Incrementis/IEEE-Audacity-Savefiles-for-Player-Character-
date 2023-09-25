@@ -1,11 +1,11 @@
-OUTER_SET slotNumbers = 3
+// ---ARRAY SPECIFIC VARIABLES
+OUTER_SET slotNumbers = 5
 OUTER_SET nameNumbers = 2
-// TODO: Are those varibales really needed? Used in tlkCheck.tpa. 
-// Possibly Yes as the name can be changed here without changing everywhere else!!!!!
 OUTER_SPRINT refTextArray 		~!_demoTexts~
 OUTER_SPRINT refSoundArray 		~!_demoSounds~
-OUTER_SPRINT TLKindexArray 		~!_demoTLKindex~ 
-OUTER_SPRINT voxNameArray 		~!_demoVoxNames~ //TODO: ARRAY
+OUTER_SPRINT TLKindexArray 		~!_demoTLKindex~
+OUTER_SPRINT voxNameArray 		~!_demoVoxNames~
+OUTER_SPRINT voxPositionArray 	~!_demoPositions~	
 // ---DECLARE DYN ARRAY FOR TEXT
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
 OUTER_SPRINT 	~!_setArrayName~	~%refTextArray%~
@@ -18,6 +18,15 @@ LAM DYN_ARRAY_CREATE
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
 OUTER_SPRINT 	~!_setArrayName~	~%TLKindexArray%~
 LAM DYN_ARRAY_CREATE
+// ---DECLARE DYN ARRAY FOR NAMES
+OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
+OUTER_SPRINT 	~!_setArrayName~	~%voxPositionArray%~
+LAM DYN_ARRAY_CREATE
+// ---DECLARE DYN ARRAY FOR NAMES
+OUTER_SET 		~!_slotNumbers~ 	= ~%nameNumbers%~
+OUTER_SPRINT 	~!_setArrayName~	~%voxNameArray%~
+LAM DYN_ARRAY_CREATE
+
 
 // ---INITIALIZE DYN ARRAY
 // TODO: ~%LANGUAGE%~ seems like a WeiDU internal constant, but can not be found in doc?!
