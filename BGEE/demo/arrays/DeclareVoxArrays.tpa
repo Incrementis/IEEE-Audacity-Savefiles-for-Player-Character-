@@ -1,11 +1,11 @@
 // ---ARRAY SPECIFIC VARIABLES
 OUTER_SET slotNumbers = 5
 OUTER_SET nameNumbers = 2
-OUTER_SPRINT refTextArray 		~!_demoTexts~
-OUTER_SPRINT refSoundArray 		~!_demoSounds~
-OUTER_SPRINT TLKindexArray 		~!_demoTLKindex~
-OUTER_SPRINT voxNameArray 		~!_demoVoxNames~
-OUTER_SPRINT voxPositionArray 	~!_demoPositions~	
+OUTER_SPRINT refTextArray 		~Texts~
+OUTER_SPRINT refSoundArray 		~Sounds~
+OUTER_SPRINT TLKindexArray 		~TLKindex~
+OUTER_SPRINT voxNameArray 		~VoxNames~
+OUTER_SPRINT voxPositionArray 	~Positions~	
 // ---DECLARE DYN ARRAY FOR TEXT
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
 OUTER_SPRINT 	~!_setArrayName~	~%refTextArray%~

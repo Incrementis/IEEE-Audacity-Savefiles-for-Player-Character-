@@ -21,10 +21,10 @@ ALTER_TLK_RANGE start_strref highest_strref BEGIN
 	//PATCH_PRINT ~%refText% [%refSound%]~
 	
 	// Loops over arrays checks if current string reference values are already in dialog.tlk
-	FOR(index=0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index)
+	FOR(index=0; VARIABLE_IS_SET $~%refTextArray%~(~%index%~); ++index)
 	BEGIN
-		SPRINT arrText 		$~!_demoTexts~(~%index%~)
-		SPRINT arrSound 	$~!_demoSoundRefs~(~%index%~)
+		SPRINT arrText 		$~%refTextArray%~(~%index%~)
+		SPRINT arrSound 	$~%refSoundArray%~(~%index%~)
 		
 		// Text and sound references already existing
 		PATCH_IF(~%refSound%~ STRING_EQUAL ~%arrSound%~) AND 
@@ -36,12 +36,7 @@ ALTER_TLK_RANGE start_strref highest_strref BEGIN
 			SPRINT 		~!_useArray~ 	~%refTextArray%~
 			SPRINT 		~!_arrayValue~	~!_NULL~
 			LPM DYN_ARRAY_SET_VALUE
-			// Sets all dyn array values to !_NULL		
-			/*SET 		~!_position~ =	index
-			SET 		~!_maxSlots~ =	slotNumbers
-			SPRINT 		~!_useArray~ 	~%refSoundArray%~
-			SPRINT 		~!_arrayValue~	~!_NULL~
-			LPM DYN_ARRAY_SET_VALUE*/
+
 			// Writes current string reference value into array
 			SET 		~!_position~ 	= index
 			SET 		~!_maxSlots~ 	= slotNumbers
@@ -65,12 +60,7 @@ ALTER_TLK_RANGE start_strref highest_strref BEGIN
 			SPRINT 		~!_useArray~ 	~%refTextArray%~
 			SPRINT 		~!_arrayValue~	~!_NULL~
 			LPM DYN_ARRAY_SET_VALUE
-			// Sets all dyn array values to !_NULL	
-			/*SET 		~!_position~ =	index
-			SET 		~!_maxSlots~ =	slotNumbers
-			SPRINT 		~!_useArray~ 	~%refSoundArray%~
-			SPRINT 		~!_arrayValue~	~!_NULL~
-			LPM DYN_ARRAY_SET_VALUE*/
+
 			// Writes current string reference value into array
 			SET 		~!_position~ 	= index
 			SET 		~!_maxSlots~ 	= slotNumbers

@@ -1,40 +1,28 @@
 // ---INITIALIZE DYN ARRAY
-OUTER_SPRINT ~!_demoTexts0~ ~Battle Cry 1~ // !_DEMOa
-OUTER_SPRINT ~!_demoTexts1~ ~Battle Cry 2~ // !_DEMO8
-OUTER_SPRINT ~!_demoTexts2~ ~Battle Cry 3~ // !_DEMO9
+OUTER_SPRINT ~Texts0~ ~Battle Cry 1~ // !_DEMOa
+OUTER_SPRINT ~Texts1~ ~Battle Cry 2~ // !_DEMO8
+OUTER_SPRINT ~Texts2~ ~Battle Cry 3~ // !_DEMO9
 // Second vox
-OUTER_SPRINT ~!_demoTexts3~ ~Becoming Leader~ 	// !_DEMOFb
-OUTER_SPRINT ~!_demoTexts4~ ~Selected 1~ 		// !_DEMOFf
-LAM ~!_!_demoTexts~ // Prefix "!_" is essential
+OUTER_SPRINT ~Texts3~ ~Becoming Leader~ // !_DEMOFb
+OUTER_SPRINT ~Texts4~ ~Selected 1~ 		// !_DEMOFf
+LAM ~!_Texts~ // Prefix "!_" is essential
 // ---INITIALIZE DYN ARRAY NAMES
-OUTER_SPRINT ~!_demoVoxNames0~ ~DEMOM~
-OUTER_SPRINT ~!_demoVoxNames1~ ~DEMOF~
-LAM ~!_!_demoVoxNames~ // Prefix "!_" is essential
+OUTER_SPRINT ~VoxNames0~ ~DEMOM~
+OUTER_SPRINT ~VoxNames1~ ~DEMOF~
+LAM ~!_VoxNames~ // Prefix "!_" is essential
 // ---INITIALIZE DYN ARRAY SOUND
-OUTER_SPRINT ~!_demoSounds0~ ~!_DEMOMa~
-OUTER_SPRINT ~!_demoSounds1~ ~!_DEMOM8~
-OUTER_SPRINT ~!_demoSounds2~ ~!_DEMOM9~
+OUTER_SPRINT ~Sounds0~ ~!_DEMOMa~
+OUTER_SPRINT ~Sounds1~ ~!_DEMOM8~
+OUTER_SPRINT ~Sounds2~ ~!_DEMOM9~
 // second vox
-OUTER_SPRINT ~!_demoSounds3~ ~!_DEMOFb~
-OUTER_SPRINT ~!_demoSounds4~ ~!_DEMOFf~
-LAM ~!_!_demoSounds~ // Prefix "!_" is essential
+OUTER_SPRINT ~Sounds3~ ~!_DEMOFb~
+OUTER_SPRINT ~Sounds4~ ~!_DEMOFf~
+LAM ~!_Sounds~ // Prefix "!_" is essential
 // ---INITIALIZE DYN ARRAY POSITION
-OUTER_SET ~!_demoPositions0~ = 9
-OUTER_SET ~!_demoPositions1~ = 10
-OUTER_SET ~!_demoPositions2~ = 11
+OUTER_SET ~Positions0~ = 9
+OUTER_SET ~Positions1~ = 10
+OUTER_SET ~Positions2~ = 11
 // Second vox
-OUTER_SET ~!_demoPositions3~ = 6
-OUTER_SET ~!_demoPositions4~ = 26
-LAM ~!_!_demoPositions~ // Prefix "!_" is essential
-
-// ----------------------------------------------------------
-// ---SHOW DYN ARRAY -> DELETE IT
-// TODO: DELETE IT!
-OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index) 
-BEGIN
-		
-	OUTER_TEXT_SPRINT test0 $~!_demoTexts~(~%index%~)
-	OUTER_TEXT_SPRINT test1 $~!_demoSounds~(~%index%~)
-	OUTER_TEXT_SPRINT test3 $~!_demoTLKindex~(~%index%~)
-	PRINT ~INIT VALUES: %test0% %test1%: %test3%~
-END
+OUTER_SET ~Positions3~ = 6
+OUTER_SET ~Positions4~ = 26
+LAM ~!_Positions~ // Prefix "!_" is essential

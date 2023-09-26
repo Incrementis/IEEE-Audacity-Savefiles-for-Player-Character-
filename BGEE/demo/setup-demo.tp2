@@ -4,9 +4,10 @@
 // -----------
 BACKUP ~./backup~ // %MOD_FOLDER% doesn't work here
 AUTHOR ~Incrementis (incrementis@gmail.com)~
-VERSION ~v0.15.1~
+VERSION ~v0.15.5~
 AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
 
+// TODO: Für die Sprache Deustch testen(keine Versionserhöhung durch dieses TODO!)!
 
 // --------------
 // Initialization
@@ -15,7 +16,7 @@ ALWAYS
 	// LIBRARY INCLUDES(Don't touch these)
 	// -----------------------------------
 	INCLUDE ~%MOD_FOLDER%/lib/dynArrayFunctionalities.tpa~
-	INCLUDE ~%MOD_FOLDER%/lib/dialogTlkFunctionalities.tpa~	
+	INCLUDE ~%MOD_FOLDER%/lib/dialogTlkFunctionalities.tpa~
 	
 END// End of "ALWAYS"
 
@@ -30,27 +31,27 @@ LANGUAGE
 	~Deutsch~	
 	~de_DE~	
 
-
 // ---------------------------------------------------
 // Install "IEEE Player Character Voice Installer" Mod
 // ---------------------------------------------------
 BEGIN ~Vox Demo BG:EE~
-// TODO: Activate line of code to copy sound files!
-//COPY ~%MOD_FOLDER%/sounds~ ~lang/%LANGUAGE%/sounds~
-
-
 // GLOBAL INCLUDES(Don't touch these, except commenting out "CheckTlk.tpa")
 // ------------------------------------------------------------------------
 INCLUDE ~%MOD_FOLDER%/arrays/DeclareVoxArrays.tpa~
 INCLUDE ~%MOD_FOLDER%/proprietary/CheckTlk.tpa~
 
+
+// VOX-SOUND-FILES FOR PLAYER CHARACTER
+// ------------------------------------
+COPY ~%MOD_FOLDER%/sounds/%LANGUAGE%~ ~lang/%LANGUAGE%/sounds~
+
 // WRITE INTO DIALOG.TLK
 // ---------------------
-OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index) 
+OUTER_FOR(index = 0; VARIABLE_IS_SET $~%refTextArray%~(~%index%~); ++index) 
 BEGIN
 	// Array elment values
-	OUTER_SPRINT text 	$~!_demoTexts~(~%index%~)
-	OUTER_SPRINT sound 	$~!_demoSounds~(~%index%~)
+	OUTER_SPRINT text 	$~%refTextArray%~(~%index%~)
+	OUTER_SPRINT sound 	$~%refSoundArray%~(~%index%~)
 	
 	ACTION_IF NOT(~%text%~ STRING_EQUAL ~!_NULL~) THEN
 	BEGIN
@@ -69,69 +70,73 @@ BEGIN
 		OUTER_SPRINT 	~!_useArray~ 	~%TLKindexArray%~
 		OUTER_SET 		~!_arrayValue~	= stringref
 		LAM DYN_ARRAY_SET_VALUE
+
 	END	
 END
 
  
 // TODO: DELETE IT
-OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTexts~(~%index%~); ++index) 
+OUTER_FOR(index = 0; VARIABLE_IS_SET $~%refSoundArray%~(~%index%~); ++index) 
 BEGIN
 		
-	OUTER_TEXT_SPRINT 	test0 $~!_demoTexts~(~%index%~)
-	OUTER_TEXT_SPRINT 	test1 $~!_demoSounds~(~%index%~)
-	OUTER_TEXT_SPRINT 	test3 $~!_demoTLKindex~(~%index%~)
-	OUTER_SET 			test4 = $~!_demoPositions~(~%index%~)
+	OUTER_TEXT_SPRINT 	test0 $~%refTextArray%~(~%index%~)
+	OUTER_TEXT_SPRINT 	test1 $~%refSoundArray%~(~%index%~)
+	OUTER_TEXT_SPRINT 	test3 $~%TLKindexArray%~(~%index%~)
+	OUTER_SET 			test4 = $~%voxPositionArray%~(~%index%~)
 	PRINT ~%test0% %test1%: %test3% in Position: %test4%~
 END
 
-// WRITE INTO CHARSUND.2DA
-// -----------------------
-// Initializes the first vox soundslot 
-OUTER_SPRINT InitName $~!_demoVoxNames~(0)
-APPEND_COL_OUTER ~./%MOD_FOLDER%/CHARSUND.2DA~ "$ $ %InitName% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
-COPY ~./%MOD_FOLDER%/CHARSUND.2DA~ ~./%MOD_FOLDER%/temp/CHARSUND.2DA~
+// WRITE INTO CHARSND.2DA
+// ----------------------
+// Initializes the first vox soundslot with -1 as default reference values
+OUTER_SPRINT InitName $~%voxNameArray%~(0)
+APPEND_COL ~CHARSND.2da~ "$ $ %InitName% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
+COPY_EXISTING "CHARSND.2da" "override/CHARSND.2da"
 PRETTY_PRINT_2DA
 // Initialize current number of columns in CHARSND.2DA
 COUNT_2DA_COLS maxCols2DA
 OUTER_SET maxCols = maxCols2DA - 1 
 
+
 // Index for the names array
 OUTER_SET nameIndex = 0 
-OUTER_FOR(index = 0; VARIABLE_IS_SET $~!_demoTLKindex~(~%index%~); ++index) 
+OUTER_FOR(index = 0; VARIABLE_IS_SET $~%TLKindexArray%~(~%index%~); ++index) 
 BEGIN
 	// Array values
-	OUTER_SPRINT 	name 		$~!_demoVoxNames~(~%nameIndex%~)
-	OUTER_SPRINT 	sound 		$~!_demoSounds~(~%index%~)
-	OUTER_SET 		position = 	$~!_demoPositions~(~%index%~)
-	OUTER_SET  		reference= 	$~!_demoTLKindex~(~%index%~)
+	OUTER_SPRINT 	name 		$~%voxNameArray%~(~%nameIndex%~)
+	OUTER_SPRINT 	sound 		$~%refSoundArray%~(~%index%~)
+	OUTER_SET 		position = 	$~%voxPositionArray%~(~%index%~)
+	OUTER_SET  		reference= 	$~%TLKindexArray%~(~%index%~)
 
 	// Checks if the name belongs to sound
 	ACTION_IF ( INDEX (CASE_SENSITIVE EXACT_MATCH ~%name%~ ~%sound%~) != "-1" ) THEN
 	BEGIN
 		// Writes the string reference into the correct position
-		COPY ~./%MOD_FOLDER%/temp/CHARSUND.2DA~ ~./%MOD_FOLDER%/temp/CHARSUND.2DA~
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
 		// "row"---"column"---"required column count"---"value entry"
 		SET_2DA_ENTRY ~%position%~ ~%maxCols%~ ~%maxCols%~ ~%reference%~
+		PRETTY_PRINT_2DA
 
 		PRINT ~%position% %maxCols% %maxCols% %reference%~
 	END ELSE 
 	BEGIN
 		// Gets the new soundslot name
 		OUTER_SET 		nameIndex = nameIndex + 1
-		OUTER_SPRINT 	name $~!_demoVoxNames~(~%nameIndex%~)
+		OUTER_SPRINT 	name $~%voxNameArray%~(~%nameIndex%~)
 		// Creates a new default column for the new soundslot name in CHARSND.2DA
-		APPEND_COL_OUTER ~./%MOD_FOLDER%/temp/CHARSUND.2DA~ "$ $ %name% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
-		COPY ~./%MOD_FOLDER%/temp/CHARSUND.2DA~ ~./%MOD_FOLDER%/temp/CHARSUND.2DA~
+		APPEND_COL ~CHARSND.2da~ "$ $ %name% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
 		PRETTY_PRINT_2DA
 		// Gets the curent number of columns in CHARSND.2DA
 		COUNT_2DA_COLS maxCols2DA
 		OUTER_SET maxCols = maxCols2DA - 1 
 
 		// Writes the string reference into the correct position
-		COPY ~./%MOD_FOLDER%/temp/CHARSUND.2DA~ ~./%MOD_FOLDER%/temp/CHARSUND.2DA~
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
 		// "row"---"column"---"required column count"---"value entry"
 		SET_2DA_ENTRY ~%position%~ ~%maxCols%~ ~%maxCols%~ ~%reference%~
-		
+		PRETTY_PRINT_2DA
+
 		PRINT ~%position% %maxCols% %maxCols% %reference%~
 	END
 END// End of "FOR"
