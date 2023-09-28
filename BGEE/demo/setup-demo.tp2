@@ -4,10 +4,8 @@
 // -----------
 BACKUP ~./backup~ // %MOD_FOLDER% doesn't work here
 AUTHOR ~Incrementis (incrementis@gmail.com)~
-VERSION ~v0.15.5~
+VERSION ~v0.15.6~
 AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
-
-// TODO: Für die Sprache Deustch testen(keine Versionserhöhung durch dieses TODO!)!
 
 // --------------
 // Initialization
@@ -89,8 +87,8 @@ END
 // WRITE INTO CHARSND.2DA
 // ----------------------
 // Initializes the first vox soundslot with -1 as default reference values
-OUTER_SPRINT InitName $~%voxNameArray%~(0)
-APPEND_COL ~CHARSND.2da~ "$ $ %InitName% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
+OUTER_SPRINT initName $~%voxNameArray%~(0)
+APPEND_COL ~CHARSND.2da~ "$ $ %initName% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
 COPY_EXISTING "CHARSND.2da" "override/CHARSND.2da"
 PRETTY_PRINT_2DA
 // Initialize current number of columns in CHARSND.2DA
@@ -99,25 +97,64 @@ OUTER_SET maxCols = maxCols2DA - 1
 
 
 // Index for the names array
-OUTER_SET nameIndex = 0 
+OUTER_SET nameIndex = 0
 OUTER_FOR(index = 0; VARIABLE_IS_SET $~%TLKindexArray%~(~%index%~); ++index) 
 BEGIN
 	// Array values
-	OUTER_SPRINT 	name 		$~%voxNameArray%~(~%nameIndex%~)
-	OUTER_SPRINT 	sound 		$~%refSoundArray%~(~%index%~)
-	OUTER_SET 		position = 	$~%voxPositionArray%~(~%index%~)
-	OUTER_SET  		reference= 	$~%TLKindexArray%~(~%index%~)
+	OUTER_SPRINT 	name 			$~%voxNameArray%~(~%nameIndex%~)
+	OUTER_SPRINT 	sound 			$~%refSoundArray%~(~%index%~)
+	OUTER_SET 		position 		= $~%voxPositionArray%~(~%index%~)
+	OUTER_SET  		reference 		= $~%TLKindexArray%~(~%index%~)
+	OUTER_SET 		nextNameIndex 	= nameIndex + 1 
+	OUTER_SPRINT 	nextName 		$~%voxNameArray%~(~%nextNameIndex%~)
+	// Length of array element
+	OUTER_SET 		soundLength 		= STRING_LENGTH ~%sound%~
+	OUTER_SET 		nameLength			= STRING_LENGTH ~%name%~
+	OUTER_SET 		nextNameLength 		= STRING_LENGTH ~%nextName%~
+	OUTER_SET 		minNextNameLength 	= nextNameLength + 1
+	OUTER_SET 		maxNextNameLength 	= nextNameLength + 2
+	// Variables
+	OUTER_SPRINT nextNameWithUnderscore ~%nextName%_~
 
-	// Checks if the name belongs to sound
-	ACTION_IF ( INDEX (CASE_SENSITIVE EXACT_MATCH ~%name%~ ~%sound%~) != "-1" ) THEN
-	BEGIN
+	// Jumps in if next name length is greataer than sound length
+	// Jumps in if next name length is greater
+	// Jumps in if the current name is similar to the next name, e.g. "DEMO" and "DEMOF"
+	ACTION_IF ( (soundLength >= minNextNameLength) 	AND
+				(soundLength <= maxNextNameLength) AND
+				(nameLength < nextNameLength) 	AND
+				(nextNameIndex < nameNumbers) AND
+				(~%nextName%~ STRING_COMPARE_REGEXP ~%name%~ = 0) ) THEN
+	BEGIN	
+		
+		OUTER_SET 		nameIndex = nextNameIndex
+		OUTER_SPRINT 	name 		$~%voxNameArray%~(~%nameIndex%~)
+
+		//TODO: DELETE
+		PRINT ~%name% %nameIndex% iteration: %index%~
+
+		// Creates a new default column for the new soundslot name in CHARSND.2DA
+		APPEND_COL ~CHARSND.2da~ "$ $ %name% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
+		PRETTY_PRINT_2DA
+		// Gets the curent number of columns in CHARSND.2DA
+		COUNT_2DA_COLS maxCols2DA
+		OUTER_SET maxCols = maxCols2DA - 1 
+
 		// Writes the string reference into the correct position
 		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
 		// "row"---"column"---"required column count"---"value entry"
 		SET_2DA_ENTRY ~%position%~ ~%maxCols%~ ~%maxCols%~ ~%reference%~
 		PRETTY_PRINT_2DA
 
-		PRINT ~%position% %maxCols% %maxCols% %reference%~
+	END ELSE ACTION_IF ( ~%sound%~ STRING_COMPARE_REGEXP ~%name%\([a-z]\|[0-9]_?\)~ = 0 ) THEN
+	BEGIN
+		// Writes the string reference into the correct position
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
+		// "row"---"column"---"required column count"---"value entry"
+		SET_2DA_ENTRY ~%position%~ ~%maxCols%~ ~%maxCols%~ ~%reference%~
+		PRETTY_PRINT_2DA
+		// TODO: DELETE
+		PRINT ~IF: %position% %maxCols% %maxCols% %reference%~
 	END ELSE 
 	BEGIN
 		// Gets the new soundslot name
@@ -136,9 +173,10 @@ BEGIN
 		// "row"---"column"---"required column count"---"value entry"
 		SET_2DA_ENTRY ~%position%~ ~%maxCols%~ ~%maxCols%~ ~%reference%~
 		PRETTY_PRINT_2DA
-
-		PRINT ~%position% %maxCols% %maxCols% %reference%~
+		// TODO: DELETE
+		PRINT ~ELSE: %position% %maxCols% %maxCols% %reference%~
 	END
+
 END// End of "FOR"
 
 
