@@ -6,23 +6,23 @@ OUTER_SPRINT refSoundArray 		~Sounds~
 OUTER_SPRINT TLKindexArray 		~TLKindex~
 OUTER_SPRINT voxNameArray 		~VoxNames~
 OUTER_SPRINT voxPositionArray 	~Positions~	
-// ---DECLARE DYN ARRAY FOR TEXT
+// ---DECLARE DYN ARRAY FOR TEXT(Text in the dialog.tlk)
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
 OUTER_SPRINT 	~!_setArrayName~	~%refTextArray%~
 LAM DYN_ARRAY_CREATE
-// ---DECLARE DYN ARRAY FOR SOUND
+// ---DECLARE DYN ARRAY FOR SOUND(Soundfile names in dialog.tlk)
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
 OUTER_SPRINT 	~!_setArrayName~	~%refSoundArray%~
 LAM DYN_ARRAY_CREATE
-// ---DECLARE DYN ARRAY FOR REF-NUMBERS
+// ---DECLARE DYN ARRAY FOR REF-NUMBERS(Reference number in CHARSND.2DA)
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
 OUTER_SPRINT 	~!_setArrayName~	~%TLKindexArray%~
 LAM DYN_ARRAY_CREATE
-// ---DECLARE DYN ARRAY FOR NAMES
+// ---DECLARE DYN ARRAY FOR POSITION(Reference number position in dialog.tlk)
 OUTER_SET 		~!_slotNumbers~ 	= ~%slotNumbers%~
 OUTER_SPRINT 	~!_setArrayName~	~%voxPositionArray%~
 LAM DYN_ARRAY_CREATE
-// ---DECLARE DYN ARRAY FOR NAMES
+// ---DECLARE DYN ARRAY FOR NAMES(Header name in CHARSND.2DA)
 OUTER_SET 		~!_slotNumbers~ 	= ~%nameNumbers%~
 OUTER_SPRINT 	~!_setArrayName~	~%voxNameArray%~
 LAM DYN_ARRAY_CREATE

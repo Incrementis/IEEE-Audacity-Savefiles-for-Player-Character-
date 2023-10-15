@@ -1,17 +1,21 @@
 // ---GET CURRENT MAX STRREF
 LAF HIGHEST_STR_REF_BY_COUNTING 
 	RET 
-		highest_strref = strRef 
+		highestStrref = strRef 
 END
 // TODO: DELETE IT
-PRINT ~tlkCheck.tpa -> highest_strref: %highest_strref%~
+PRINT ~tlkCheck.tpa -> highestStrref: %highestStrref%~
 
 
 // ---CHECK DIALOG.TLK
 //TODO: start_strref depends on game!
-OUTER_SET start_strref 	= 71400
-OUTER_SET strref 		= start_strref
-ALTER_TLK_RANGE start_strref highest_strref BEGIN
+// tlk loop variables
+OUTER_SET specialCondition 	= 0
+OUTER_SET conditionalIndex 	= 0
+OUTER_SET startStrref 		= 71400
+OUTER_SET strref 			= startStrref
+
+ALTER_TLK_RANGE startStrref highestStrref BEGIN
 
 	// Gets sound and text from string reference
 	GET_STRREF 		strref 	refText
@@ -21,7 +25,7 @@ ALTER_TLK_RANGE start_strref highest_strref BEGIN
 	//PATCH_PRINT ~%refText% [%refSound%]~
 	
 	// Loops over arrays checks if current string reference values are already in dialog.tlk
-	FOR(index=0; VARIABLE_IS_SET $~%refTextArray%~(~%index%~); ++index)
+	FOR(index=0; index < slotNumbers; ++index)
 	BEGIN
 		SPRINT arrText 		$~%refTextArray%~(~%index%~)
 		SPRINT arrSound 	$~%refSoundArray%~(~%index%~)
@@ -29,49 +33,84 @@ ALTER_TLK_RANGE start_strref highest_strref BEGIN
 		// Text and sound references already existing
 		PATCH_IF(~%refSound%~ STRING_EQUAL ~%arrSound%~) AND 
 				(~%refText%~ STRING_EQUAL ~%arrText%~) THEN
-		BEGIN			
+		BEGIN	
 			// Sets all dyn array values to !_NULL	
-			SET 		~!_position~ =	index
-			SET 		~!_maxSlots~ =	slotNumbers
-			SPRINT 		~!_useArray~ 	~%refTextArray%~
-			SPRINT 		~!_arrayValue~	~!_NULL~
-			LPM DYN_ARRAY_SET_VALUE
+			SET 		~!_position~ 		= index
+			SET 		~!_maxSlots~ 		= slotNumbers
+			SET			~!_collected~		= 0
+			SPRINT 		~!_useArrayName~ 	~%refTextArray%~
+			SPRINT 		~!_arrayValue~		~!_NULL~
+			LPM DYN_ARRAY_SET_VALUES
 
-			// Writes current string reference value into array
-			SET 		~!_position~ 	= index
-			SET 		~!_maxSlots~ 	= slotNumbers
-			SPRINT 		~!_useArray~ 	~%TLKindexArray%~
-			SET 		~!_arrayValue~ 	= strref
-			LPM DYN_ARRAY_SET_VALUE
-							
-			PATCH_PRINT ~References for "%arrText%[%arrSound%]" in dialog.tlk are already exsiting on position %strref%~			
+			// Sets current string reference value
+			SET 		~!_position~ 		= index
+			SET 		~!_maxSlots~ 		= slotNumbers
+			SET			~!_collected~		= 0
+			SPRINT 		~!_useArrayName~ 	~%TLKindexArray%~
+			SET 		~!_arrayValue~ 		= strref
+			LPM DYN_ARRAY_SET_VALUES
+
+			// Sets condition to true and sets current conditional index
+			SET specialCondition = 1
+			SET conditionalIndex = index
+			// MONITORING				
+			PATCH_PRINT ~Reference for "%arrText%[%arrSound%]" in dialog.tlk is already exsiting on position %strref%~			
 		END 
 		// Sound reference already existing, but text is not fitting.
-		ELSE PATCH_IF (~%refSound%~ STRING_EQUAL ~%arrSound%~) AND NOT 
-				 (~%refText%~ STRING_EQUAL ~%arrText%~) AND NOT
-				 (~%arrText%~ STRING_EQUAL ~!_NULL~)THEN
+		ELSE PATCH_IF 	(~%refSound%~ STRING_EQUAL ~%arrSound%~) AND NOT 
+						(~%refText%~ STRING_EQUAL ~%arrText%~) AND NOT
+						(~%arrText%~ STRING_EQUAL ~!_NULL~) THEN
 		BEGIN
 			// Replaces referenced text in dialog.tlk with the array text
 			REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~%refText%~ ~%arrText%~
 			
 			// Sets all dyn array values to !_NULL	
-			SET 		~!_position~ =	index
-			SET 		~!_maxSlots~ =	slotNumbers
-			SPRINT 		~!_useArray~ 	~%refTextArray%~
-			SPRINT 		~!_arrayValue~	~!_NULL~
-			LPM DYN_ARRAY_SET_VALUE
+			SET 		~!_position~ 		= index
+			SET 		~!_maxSlots~ 		= slotNumbers
+			SET			~!_collected~		= 0
+			SPRINT 		~!_useArrayName~ 	~%refTextArray%~
+			SPRINT 		~!_arrayValue~		~!_NULL~
+			LPM DYN_ARRAY_SET_VALUES
 
-			// Writes current string reference value into array
-			SET 		~!_position~ 	= index
-			SET 		~!_maxSlots~ 	= slotNumbers
-			SPRINT 		~!_useArray~ 	~%TLKindexArray%~
-			SET 		~!_arrayValue~ 	= strref
-			LPM DYN_ARRAY_SET_VALUE
-							
+			// Sets current string reference value
+			SET 		~!_position~ 		= index
+			SET 		~!_maxSlots~ 		= slotNumbers
+			SET			~!_collected~ 		= 0
+			SPRINT 		~!_useArrayName~ 	~%TLKindexArray%~
+			SET 		~!_arrayValue~ 		= strref
+			LPM DYN_ARRAY_SET_VALUES
+
+			// Sets condition to true and sets current conditional index
+			SET specialCondition = 1
+			SET conditionalIndex = index
+			// MONITORING			
 			PATCH_PRINT ~Correcting "%refText%" to "%arrText%" in dialog.tlk on position %strref%~			
 		END	
 		
 	END // End of "FOR"
+
+	// Fills collected values into arrays
+	PATCH_IF(specialCondition = 1) THEN
+	BEGIN
+		// Resets flag/condition
+		SET specialCondition = 0
+
+		// Sets all dyn array values to !_NULL	
+		SET 		~!_position~ 		= conditionalIndex
+		SET 		~!_maxSlots~ 		= slotNumbers
+		SET			~!_collected~		= 1
+		SPRINT 		~!_useArrayName~ 	~%refTextArray%~
+		SPRINT 		~!_arrayValue~		~!_NULL~
+		LPM DYN_ARRAY_SET_VALUES
+
+		// Sets current string reference value
+		SET 		~!_position~ 		= conditionalIndex
+		SET 		~!_maxSlots~ 		= slotNumbers
+		SET			~!_collected~ 		= 1
+		SPRINT 		~!_useArrayName~ 	~%TLKindexArray%~
+		SET 		~!_arrayValue~ 		= strref
+		LPM DYN_ARRAY_SET_VALUES
+	END
 	
 	// Increases with every iteration. Value before is equal to current string reference.
 	SET strref = strref+1

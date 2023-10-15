@@ -4,8 +4,14 @@
 // -----------
 BACKUP ~./backup~ // %MOD_FOLDER% doesn't work here
 AUTHOR ~Incrementis (incrementis@gmail.com)~
-VERSION ~v0.15.6~
+VERSION ~v0.16.6~
 AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
+
+
+// TODO: Für die Sprache Deustch testen(keine Versionserhöhung durch dieses TODO!)!
+// TODO: Mehr Sounddateien installieren und herausfinden, welche funktionieren und welche nicht
+// TODO: Herausfinden warum manche Sounddateien nicht abgespielt werden
+// TODO: Herausfinden, warum manche Texte nicht angezeigt werden. evtl. backup-Spiel verwenden
 
 // --------------
 // Initialization
@@ -13,8 +19,8 @@ AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
 ALWAYS 
 	// LIBRARY INCLUDES(Don't touch these)
 	// -----------------------------------
-	INCLUDE ~%MOD_FOLDER%/lib/dynArrayFunctionalities.tpa~
-	INCLUDE ~%MOD_FOLDER%/lib/dialogTlkFunctionalities.tpa~
+	INCLUDE ~%MOD_FOLDER%/lib/dynArrayFunctionalities.tph~
+	INCLUDE ~%MOD_FOLDER%/lib/dialogTlkFunctionalities.tph~
 	
 END// End of "ALWAYS"
 
@@ -45,7 +51,11 @@ COPY ~%MOD_FOLDER%/sounds/%LANGUAGE%~ ~lang/%LANGUAGE%/sounds~
 
 // WRITE INTO DIALOG.TLK
 // ---------------------
-OUTER_FOR(index = 0; VARIABLE_IS_SET $~%refTextArray%~(~%index%~); ++index) 
+// Loop variables
+OUTER_SET tlkCondition 			= 0
+OUTER_SET tlkConditionalIndex 	= 0
+
+OUTER_FOR(index = 0; index < slotNumbers; ++index) 
 BEGIN
 	// Array elment values
 	OUTER_SPRINT text 	$~%refTextArray%~(~%index%~)
@@ -65,13 +75,26 @@ BEGIN
 		// Stores the string references to add them later into the specific 2DA file
 		OUTER_SET 		~!_position~ 	= index
 		OUTER_SET 		~!_maxSlots~ 	= slotNumbers
-		OUTER_SPRINT 	~!_useArray~ 	~%TLKindexArray%~
+		OUTER_SET		~!_collected~	= 0
+		OUTER_SPRINT 	~!_useArrayName~ ~%TLKindexArray%~
 		OUTER_SET 		~!_arrayValue~	= stringref
-		LAM DYN_ARRAY_SET_VALUE
+		LAM DYN_ARRAY_SET_VALUES
 
+		OUTER_SET tlkCondition 			= 1
+		OUTER_SET tlkConditionalIndex 	= index
 	END	
 END
 
+// All array values are collected
+ACTION_IF (tlkCondition = 1) THEN
+BEGIN
+	OUTER_SET 		~!_position~ 	= tlkConditionalIndex
+	OUTER_SET 		~!_maxSlots~ 	= slotNumbers
+	OUTER_SET		~!_collected~	= 1
+	OUTER_SPRINT 	~!_useArrayName~ ~%TLKindexArray%~
+	OUTER_SET 		~!_arrayValue~	= stringref
+	LAM DYN_ARRAY_SET_VALUES
+END
  
 // TODO: DELETE IT
 OUTER_FOR(index = 0; VARIABLE_IS_SET $~%refSoundArray%~(~%index%~); ++index) 
@@ -84,6 +107,7 @@ BEGIN
 	PRINT ~%test0% %test1%: %test3% in Position: %test4%~
 END
 
+// TODO: EXPLAIN CONCEPT, BECUASE IT IS TOO COMPLEX!!!!
 // WRITE INTO CHARSND.2DA
 // ----------------------
 // Initializes the first vox soundslot with -1 as default reference values
@@ -91,10 +115,11 @@ OUTER_SPRINT initName $~%voxNameArray%~(0)
 APPEND_COL ~CHARSND.2da~ "$ $ %initName% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
 COPY_EXISTING "CHARSND.2da" "override/CHARSND.2da"
 PRETTY_PRINT_2DA
-// Initialize current number of columns in CHARSND.2DA
+// Initializes current number of columns in CHARSND.2DA ?????WHY????
 COUNT_2DA_COLS maxCols2DA
 OUTER_SET maxCols = maxCols2DA - 1 
-
+// TODO: Delete
+PRINT ~%maxCols%~
 
 // Index for the names array
 OUTER_SET nameIndex = 0
@@ -114,7 +139,7 @@ BEGIN
 	OUTER_SET 		minNextNameLength 	= nextNameLength + 1
 	OUTER_SET 		maxNextNameLength 	= nextNameLength + 2
 	// Variables
-	OUTER_SPRINT nextNameWithUnderscore ~%nextName%_~
+	OUTER_SPRINT nextNameWithUnderscore ~%nextName%_~ // WHY??????
 
 	// Jumps in if next name length is greataer than sound length
 	// Jumps in if next name length is greater
@@ -146,6 +171,7 @@ BEGIN
 		SET_2DA_ENTRY ~%position%~ ~%maxCols%~ ~%maxCols%~ ~%reference%~
 		PRETTY_PRINT_2DA
 
+	// TODO: EXPLAIN REGEX
 	END ELSE ACTION_IF ( ~%sound%~ STRING_COMPARE_REGEXP ~%name%\([a-z]\|[0-9]_?\)~ = 0 ) THEN
 	BEGIN
 		// Writes the string reference into the correct position
