@@ -2,16 +2,11 @@
 // -----------
 // Information
 // -----------
-BACKUP ~./backup~ // %MOD_FOLDER% doesn't work here
+BACKUP ~./weidu_external/demo/backup~ // %MOD_FOLDER% doesn't work here
 AUTHOR ~Incrementis (incrementis@gmail.com)~
-VERSION ~v0.16.6~
+VERSION ~v0.17.9~
 AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
 
-
-// TODO: Für die Sprache Deustch testen(keine Versionserhöhung durch dieses TODO!)!
-// TODO: Mehr Sounddateien installieren und herausfinden, welche funktionieren und welche nicht
-// TODO: Herausfinden warum manche Sounddateien nicht abgespielt werden
-// TODO: Herausfinden, warum manche Texte nicht angezeigt werden. evtl. backup-Spiel verwenden
 
 // --------------
 // Initialization
@@ -19,9 +14,20 @@ AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
 ALWAYS 
 	// LIBRARY INCLUDES(Don't touch these)
 	// -----------------------------------
-	INCLUDE ~%MOD_FOLDER%/lib/dynArrayFunctionalities.tph~
+	INCLUDE ~%MOD_FOLDER%/lib/windows/dynArrayFunctionalities.tph~
 	INCLUDE ~%MOD_FOLDER%/lib/dialogTlkFunctionalities.tph~
+	INCLUDE ~%MOD_FOLDER%/lib/fileHandling.tph~
 	
+	// EE SOUNDSET COMPATIBILITY FILE(Don't touch this)
+	// ------------------------------------------------
+	ACTION_IF NOT FILE_EXISTS_IN_GAME ~M_cdsnd.lua~ THEN
+	BEGIN
+		OUTER_SPRINT ~!_filename~ ~weidu_external/%MOD_FOLDER%/temp/M_cdsnd.lua~
+		LAM CREATE_FILE
+		// File is used to enter strref text reference which will then be displayed on the terminal.
+		COPY ~./weidu_external/%MOD_FOLDER%/temp/M_cdsnd.lua~ ~override~
+	END
+
 END// End of "ALWAYS"
 
 
@@ -49,12 +55,18 @@ INCLUDE ~%MOD_FOLDER%/proprietary/CheckTlk.tpa~
 // ------------------------------------
 COPY ~%MOD_FOLDER%/sounds/%LANGUAGE%~ ~lang/%LANGUAGE%/sounds~
 
+
+// TODO: Use it to add strref texts
+// Reads from the game override folder
+APPEND ~M_cdsnd.lua~ ~HELLO~
+APPEND ~M_cdsnd.lua~ ~WORLD!~
+
+
 // WRITE INTO DIALOG.TLK
 // ---------------------
 // Loop variables
 OUTER_SET tlkCondition 			= 0
 OUTER_SET tlkConditionalIndex 	= 0
-
 OUTER_FOR(index = 0; index < slotNumbers; ++index) 
 BEGIN
 	// Array elment values
@@ -66,8 +78,8 @@ BEGIN
 		// Writes the text and sound into the dialog.tlk
 		LAF RESOLVE_STR_REF_WITH_STRINGS
 			STR_VAR
-				voxText 	= ~%text%~
-				voxSound	= ~%sound%~
+				text 	= ~%text%~
+				sound	= ~%sound%~
 			RET
 				stringref = strRef
 		END
@@ -84,7 +96,6 @@ BEGIN
 		OUTER_SET tlkConditionalIndex 	= index
 	END	
 END
-
 // All array values are collected
 ACTION_IF (tlkCondition = 1) THEN
 BEGIN
@@ -95,6 +106,7 @@ BEGIN
 	OUTER_SET 		~!_arrayValue~	= stringref
 	LAM DYN_ARRAY_SET_VALUES
 END
+ 
  
 // TODO: DELETE IT
 OUTER_FOR(index = 0; VARIABLE_IS_SET $~%refSoundArray%~(~%index%~); ++index) 
@@ -119,7 +131,7 @@ PRETTY_PRINT_2DA
 COUNT_2DA_COLS maxCols2DA
 OUTER_SET maxCols = maxCols2DA - 1 
 // TODO: Delete
-PRINT ~%maxCols%~
+//PRINT ~%maxCols%~
 
 // Index for the names array
 OUTER_SET nameIndex = 0
@@ -139,7 +151,7 @@ BEGIN
 	OUTER_SET 		minNextNameLength 	= nextNameLength + 1
 	OUTER_SET 		maxNextNameLength 	= nextNameLength + 2
 	// Variables
-	OUTER_SPRINT nextNameWithUnderscore ~%nextName%_~ // WHY??????
+	//OUTER_SPRINT nextNameWithUnderscore ~%nextName%_~ // WHY??????
 
 	// Jumps in if next name length is greataer than sound length
 	// Jumps in if next name length is greater
@@ -205,6 +217,15 @@ BEGIN
 
 END// End of "FOR"
 
+//TODO: DELETE IT!!
+/*ACTION_IF NOT FILE_EXISTS_IN_GAME ~M_cdsnd.lua~ BEGIN
+<<<<<<<< ./inlined/M_cdsnd.lua
+>>>>>>>>
+COPY ~./inlined/M_cdsnd.lua~ ~override~
+END
+*/
+//TODO: Anpassen
+//APPEND ~M_cdsnd.lua~ ~filenames_stringrefs['%cd_name%'] = {%cd_select_name%, 2}~  
 
 // TODO: Activate line???!
 //COPY_EXISTING ~charsnd.2da~ ~override~ 
