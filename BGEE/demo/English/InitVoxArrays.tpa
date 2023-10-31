@@ -22,6 +22,10 @@ LAM ~!_Texts~ // Prefix "!_" is essential
 OUTER_SPRINT ~VoxNames0~ ~!_DEMA~
 OUTER_SPRINT ~VoxNames1~ ~!_DEMB~
 LAM ~!_VoxNames~ // Prefix "!_" is essential
+// ---INITIALIZE DYN ARRAY SELECTABLE NAMES
+OUTER_SPRINT ~VoxSelectNames0~ ~Demo(Complete):Female Robot~
+OUTER_SPRINT ~VoxSelectNames1~ ~Demo(Incomplete):Female Robot~
+LAM ~!_VoxSelectNames~ // Prefix "!_" is essential
 // ---INITIALIZE DYN ARRAY SOUND
 OUTER_SPRINT ~Sounds0~ ~!_DEMAa~
 OUTER_SPRINT ~Sounds1~ ~!_DEMA8~

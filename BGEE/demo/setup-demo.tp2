@@ -4,7 +4,7 @@
 // -----------
 BACKUP ~./weidu_external/demo/backup~ // %MOD_FOLDER% doesn't work here
 AUTHOR ~Incrementis (incrementis@gmail.com)~
-VERSION ~v0.17.9~
+VERSION ~v0.18.9~
 AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
 
 
@@ -54,12 +54,6 @@ INCLUDE ~%MOD_FOLDER%/proprietary/CheckTlk.tpa~
 // VOX-SOUND-FILES FOR PLAYER CHARACTER
 // ------------------------------------
 COPY ~%MOD_FOLDER%/sounds/%LANGUAGE%~ ~lang/%LANGUAGE%/sounds~
-
-
-// TODO: Use it to add strref texts
-// Reads from the game override folder
-APPEND ~M_cdsnd.lua~ ~HELLO~
-APPEND ~M_cdsnd.lua~ ~WORLD!~
 
 
 // WRITE INTO DIALOG.TLK
@@ -217,19 +211,19 @@ BEGIN
 
 END// End of "FOR"
 
-//TODO: DELETE IT!!
-/*ACTION_IF NOT FILE_EXISTS_IN_GAME ~M_cdsnd.lua~ BEGIN
-<<<<<<<< ./inlined/M_cdsnd.lua
->>>>>>>>
-COPY ~./inlined/M_cdsnd.lua~ ~override~
+
+// WRITE INTO M_cdsnd.lua
+// ----------------------
+// Fills the lua file with sound slot alternative name which can be then seen in character creation menu
+OUTER_FOR(index = 0; index < nameNumbers; ++index)
+BEGIN
+	OUTER_SPRINT selectName 	$~%voxSelectNameArray%~(~%index%~)
+	OUTER_SPRINT name 			$~%voxNameArray%~(~%index%~)
+	OUTER_SET selectNameStrref 	= RESOLVE_STR_REF(~%selectName%~)
+	// Check out ingame BGEE.lua file for more information.
+	// filenames_stringrefs['Sound slot header name from CHARSND.2DA'] = {strref for alternative text display, 2}
+	APPEND ~M_cdsnd.lua~ ~filenames_stringrefs['%name%'] = {%selectNameStrref%, 2}~
 END
-*/
-//TODO: Anpassen
-//APPEND ~M_cdsnd.lua~ ~filenames_stringrefs['%cd_name%'] = {%cd_select_name%, 2}~  
-
-// TODO: Activate line???!
-//COPY_EXISTING ~charsnd.2da~ ~override~ 
-
 
 // TODO: DELETE ALL INLINED FILES! 
 // CLEAR_EVERYTHING could works, alos the own written macro DYN_ARRAY_DELETE_BUFFER!
