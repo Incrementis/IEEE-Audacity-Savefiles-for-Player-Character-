@@ -1,3 +1,4 @@
+// Never Forget: Comments can "lie", but code not so much ;P
 // ---GET CURRENT MAX STRREF
 LAF HIGHEST_STR_REF_BY_COUNTING 
 	RET 
