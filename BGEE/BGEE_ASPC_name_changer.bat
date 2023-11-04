@@ -24,7 +24,7 @@ REM https://stackoverflow.com/questions/3288552/how-can-i-escape-an-exclamation-
 setlocal DISABLEDELAYEDEXPANSION
 
 REM The values of the variables are changable. The rest of the code shouldn`t be changed.
-set name=!_DEMO
+set name=!_DEMA
 set source_path="%~dp0\raw"
 set target_path="%~dp0\renamed" 
 

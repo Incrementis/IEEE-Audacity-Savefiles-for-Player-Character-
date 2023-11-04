@@ -1,5 +1,5 @@
 // ---ARRAY SPECIFIC VARIABLES
-OUTER_SET slotNumbers = 17
+OUTER_SET slotNumbers = 34
 OUTER_SET nameNumbers = 2
 OUTER_SPRINT refTextArray 		~Texts~
 OUTER_SPRINT refSoundArray 		~Sounds~

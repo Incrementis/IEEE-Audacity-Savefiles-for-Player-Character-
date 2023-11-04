@@ -4,9 +4,17 @@
 // -----------
 BACKUP ~./weidu_external/demo/backup~ // %MOD_FOLDER% doesn't work here
 AUTHOR ~Incrementis (incrementis@gmail.com)~
-VERSION ~v0.19.9~
+VERSION ~v0.19.12~
 AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
 
+
+// + Adding all sound sets so far available
+// + Adding all sound sets strref positions for CHARSND.2da
+// + Restructering the sound folder and renaming it
+// TODO: REPERATUR IM DIALOG:TLK TESTEN, AUCH MIT GRÖßERER ANZAHL AN DIALOG.TLK
+// TODO: Für die Sprache Deustch testen(keine Versionserhöhung durch dieses TODO!)!
+// TODO: Mehr Sounddateien installieren und herausfinden, welche funktionieren und welche nicht
+// TODO: Herausfinden warum manche Sounddateien nicht abgespielt werden
 
 // --------------
 // Initialization
@@ -53,8 +61,8 @@ INCLUDE ~%MOD_FOLDER%/proprietary/CheckTlk.tpa~
 
 // VOX-SOUND-FILES FOR PLAYER CHARACTER
 // ------------------------------------
-COPY ~%MOD_FOLDER%/sounds/%LANGUAGE%~ ~lang/%LANGUAGE%/sounds~
-
+COPY ~%MOD_FOLDER%/vox/%LANGUAGE%/sound~ 	~lang/%LANGUAGE%/sounds~
+COPY ~%MOD_FOLDER%/vox/%LANGUAGE%/wav~ 		~override~
 
 // WRITE INTO DIALOG.TLK
 // ---------------------
