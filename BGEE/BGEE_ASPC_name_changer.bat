@@ -1,9 +1,12 @@
 @echo off 
+REM Never Forget: Comments can "lie", but code not so much ;P
+REM ---------------------------
 REM Never Forget, comments can "lie", but code not so much ;P 
 REM Ensures that the commands are not shown when the code is executed.
 
 
 REM TODO
+REM Never Forget: Comments can "lie", but code not so much ;P
 REM https://stackoverflow.com/questions/1645843/resolve-absolute-path-from-relative-path-and-or-file-name
 REM echo %%~dp0 is "%~dp0"
 REM echo %%0 is "%0"

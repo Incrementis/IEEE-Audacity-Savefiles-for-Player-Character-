@@ -87,7 +87,7 @@ OUTER_SPRINT ~Sounds34~ ~!_DEMBb~
 OUTER_SPRINT ~Sounds35~ ~!_DEMBf~
 LAM ~!_Sounds~ 
 // ---INITIALIZE DYN ARRAY POSITION
-// // !_DEMA
+// !_DEMA
 OUTER_SET ~Positions0~ = 9
 OUTER_SET ~Positions1~ = 10
 OUTER_SET ~Positions2~ = 11

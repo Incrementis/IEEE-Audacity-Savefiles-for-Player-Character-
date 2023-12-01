@@ -1,0 +1,3 @@
+// ---INITIALIZE ALL SLOT-NUMBERS	
+OUTER_SET slotNumbers = 36
+OUTER_SET nameNumbers = 2

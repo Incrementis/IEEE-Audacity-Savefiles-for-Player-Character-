@@ -4,17 +4,9 @@
 // -----------
 BACKUP ~./weidu_external/demo/backup~ // %MOD_FOLDER% doesn't work here
 AUTHOR ~Incrementis (incrementis@gmail.com)~
-VERSION ~v0.19.12~
+VERSION ~v0.20.13~
 AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
 
-
-// + Adding all sound sets so far available
-// + Adding all sound sets strref positions for CHARSND.2da
-// + Restructering the sound folder and renaming it
-// TODO: REPERATUR IM DIALOG:TLK TESTEN, AUCH MIT GRÖßERER ANZAHL AN DIALOG.TLK
-// TODO: Für die Sprache Deustch testen(keine Versionserhöhung durch dieses TODO!)!
-// TODO: Mehr Sounddateien installieren und herausfinden, welche funktionieren und welche nicht
-// TODO: Herausfinden warum manche Sounddateien nicht abgespielt werden
 
 // --------------
 // Initialization
@@ -118,7 +110,7 @@ BEGIN
 	OUTER_TEXT_SPRINT 	test1 $~%refSoundArray%~(~%index%~)
 	OUTER_TEXT_SPRINT 	test3 $~%TLKindexArray%~(~%index%~)
 	OUTER_SET 			test4 = $~%voxPositionArray%~(~%index%~)
-	PRINT ~%test0% %test1%: %test3% in Position: %test4%~
+	PRINT ~text:%test0%, sound:%test1%: strref:%test3% in Position: %test4%~
 END
 
 // TODO: EXPLAIN CONCEPT, BECUASE IT IS TOO COMPLEX!!!!

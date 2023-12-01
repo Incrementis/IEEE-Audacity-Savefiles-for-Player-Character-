@@ -1,15 +1,7 @@
 // Never Forget: Comments can "lie", but code not so much ;P
 // ---ARRAY SPECIFIC VARIABLES
-// TODO: Delete it when inlcudes work!
-// OUTER_SET slotNumbers = 0
-// OUTER_SET nameNumbers = 2
-// ---INITILIZE DYN ARRAY NUMBER OF VALUES
-INCLUDE ~%MOD_FOLDER%/%LANGUAGE%/InitAllSlotNumbers.tpa~
-// TODO: DELETE IT
-PRINT ~InitAllSlotNumbers.tpa -> %LANGUAGE%~
-PRINT ~slotNumbers-> %slotNumbers%~
-PRINT ~nameNumbers-> %nameNumbers%~
-
+OUTER_SET slotNumbers = 36
+OUTER_SET nameNumbers = 2
 OUTER_SPRINT refTextArray 		~Texts~
 OUTER_SPRINT refSoundArray 		~Sounds~
 OUTER_SPRINT TLKindexArray 		~TLKindex~
@@ -40,7 +32,24 @@ LAM DYN_ARRAY_CREATE
 OUTER_SET 		~!_slotNumbers~ 	= ~%nameNumbers%~
 OUTER_SPRINT 	~!_setArrayName~	~%voxSelectNameArray%~
 LAM DYN_ARRAY_CREATE
-// ---INITILIZE DYN ARRAY VALUES
+
+// ---INITIALIZE DYN ARRAY
+// TODO: ~%LANGUAGE%~ seems like a WeiDU internal constant, but can not be found in doc?!
+/*
+ACTION_IF (~%LANGUAGE%~ STRING_EQUAL ~en_US~) THEN
+BEGIN
+	INCLUDE ~%MOD_FOLDER%/English/InitVoxArrays.tpa~
+	// TODO: DELETE IT!
+	PRINT ~DeclareVoxArrays.tpa -> %LANGUAGE%~
+END 
+ELSE ACTION_IF (~%LANGUAGE%~ STRING_EQUAL ~de_DE~) THEN
+BEGIN
+	INCLUDE ~%MOD_FOLDER%/German/InitVoxArrays.tpa~
+	// TODO: DELETE IT!
+	PRINT ~DeclareVoxArrays.tpa -> %LANGUAGE%~
+END
+*/
+
 INCLUDE ~%MOD_FOLDER%/%LANGUAGE%/InitVoxArrays.tpa~
 	// TODO: DELETE IT!
 PRINT ~DeclareVoxArrays.tpa -> %LANGUAGE%~
