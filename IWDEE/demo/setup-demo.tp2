@@ -1,0 +1,234 @@
+// Never Forget: Comments can "lie", but code not so much ;P
+// -----------
+// Information
+// -----------
+BACKUP ~./weidu_external/demo/backup~ // %MOD_FOLDER% doesn't work here
+AUTHOR ~Incrementis (incrementis@gmail.com)~
+VERSION ~v0.23.16~
+AUTO_EVAL_STRINGS// This will prevent the need of EVAL for string variables
+
+
+// --------------
+// Initialization
+// --------------
+ALWAYS 
+	// LIBRARY INCLUDES(Don't touch these)
+	// -----------------------------------
+	INCLUDE ~%MOD_FOLDER%/lib/windows/dynArrayFunctionalities.tph~
+	INCLUDE ~%MOD_FOLDER%/lib/dialogTlkFunctionalities.tph~
+	INCLUDE ~%MOD_FOLDER%/lib/fileHandling.tph~
+	
+	// EE SOUNDSET COMPATIBILITY FILE(Don't touch this)
+	// ------------------------------------------------
+	ACTION_IF NOT FILE_EXISTS_IN_GAME ~M_cdsnd.lua~ THEN
+	BEGIN
+		OUTER_SPRINT ~!_filename~ ~weidu_external/%MOD_FOLDER%/temp/M_cdsnd.lua~
+		LAM CREATE_FILE
+		// File is used to enter strref text reference which will then be displayed on the terminal.
+		COPY ~./weidu_external/%MOD_FOLDER%/temp/M_cdsnd.lua~ ~override~
+	END
+
+END// End of "ALWAYS"
+
+
+// ---------
+// Languages
+// ---------
+LANGUAGE
+	~English~	// Language
+	~en_US~		// Directory
+LANGUAGE
+	~Deutsch~	
+	~de_DE~	
+
+// ---------------------------------------------------
+// Install "IEEE Player Character Voice Installer" Mod
+// ---------------------------------------------------
+BEGIN ~Vox Demo BG:EE~
+// GLOBAL INCLUDES(Don't touch these, except commenting out "CheckTlk.tpa")
+// ------------------------------------------------------------------------
+INCLUDE ~%MOD_FOLDER%/arrays/DeclareVoxArrays.tpa~
+INCLUDE ~%MOD_FOLDER%/proprietary/CheckTlk.tpa~
+
+
+// VOX-SOUND-FILES FOR PLAYER CHARACTER
+// ------------------------------------
+COPY ~%MOD_FOLDER%/vox/%LANGUAGE%/sound~ 	~lang/%LANGUAGE%/sounds~
+COPY ~%MOD_FOLDER%/vox/%LANGUAGE%/wav~ 		~override~
+
+// WRITE INTO DIALOG.TLK
+// ---------------------
+// Loop variables
+OUTER_SET tlkCondition 			= 0
+OUTER_SET tlkConditionalIndex 	= 0
+OUTER_FOR(index = 0; index < slotNumbers; ++index) 
+BEGIN
+	// Array elment values
+	OUTER_SPRINT text 	$~%refTextArray%~(~%index%~)
+	OUTER_SPRINT sound 	$~%refSoundArray%~(~%index%~)
+	
+	ACTION_IF NOT(~%text%~ STRING_EQUAL ~!_NULL~) THEN
+	BEGIN
+		// Writes the text and sound into the dialog.tlk
+		LAF RESOLVE_STR_REF_WITH_STRINGS
+			STR_VAR
+				text 	= ~%text%~
+				sound	= ~%sound%~
+			RET
+				stringref = strRef
+		END
+		
+		// Stores the string references to add them later into the specific 2DA file
+		OUTER_SET 		~!_position~ 	= index
+		OUTER_SET 		~!_maxSlots~ 	= slotNumbers
+		OUTER_SET		~!_collected~	= 0
+		OUTER_SPRINT 	~!_useArrayName~ ~%TLKindexArray%~
+		OUTER_SET 		~!_arrayValue~	= stringref
+		LAM DYN_ARRAY_SET_VALUES
+
+		OUTER_SET tlkCondition 			= 1
+		OUTER_SET tlkConditionalIndex 	= index
+	END	
+END
+// All array values are collected
+ACTION_IF (tlkCondition = 1) THEN
+BEGIN
+	OUTER_SET 		~!_position~ 	= tlkConditionalIndex
+	OUTER_SET 		~!_maxSlots~ 	= slotNumbers
+	OUTER_SET		~!_collected~	= 1
+	OUTER_SPRINT 	~!_useArrayName~ ~%TLKindexArray%~
+	OUTER_SET 		~!_arrayValue~	= stringref
+	LAM DYN_ARRAY_SET_VALUES
+END
+ 
+ 
+// TODO: DELETE IT
+OUTER_FOR(index = 0; VARIABLE_IS_SET $~%refSoundArray%~(~%index%~); ++index) 
+BEGIN
+		
+	OUTER_TEXT_SPRINT 	test0 $~%refTextArray%~(~%index%~)
+	OUTER_TEXT_SPRINT 	test1 $~%refSoundArray%~(~%index%~)
+	OUTER_TEXT_SPRINT 	test3 $~%TLKindexArray%~(~%index%~)
+	OUTER_SET 			test4 = $~%voxPositionArray%~(~%index%~)
+	PRINT ~text:%test0%, sound:%test1%: strref:%test3% in Position: %test4%~
+END
+
+// TODO: EXPLAIN CONCEPT, BECUASE IT IS TOO COMPLEX!!!!
+// WRITE INTO CHARSND.2DA
+// ----------------------
+// Initializes the first vox soundslot with -1 as default reference values
+OUTER_SPRINT initName $~%voxNameArray%~(0)
+APPEND_COL ~CHARSND.2da~ "$ $ %initName% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
+COPY_EXISTING "CHARSND.2da" "override/CHARSND.2da"
+PRETTY_PRINT_2DA
+// Initializes current number of columns in CHARSND.2DA ?????WHY????
+COUNT_2DA_COLS maxCols2DA
+OUTER_SET maxCols = maxCols2DA - 1 
+// TODO: Delete
+//PRINT ~%maxCols%~
+
+// Index for the names array
+OUTER_SET nameIndex = 0
+OUTER_FOR(index = 0; VARIABLE_IS_SET $~%TLKindexArray%~(~%index%~); ++index) 
+BEGIN
+	// Array values
+	OUTER_SPRINT 	name 			$~%voxNameArray%~(~%nameIndex%~)
+	OUTER_SPRINT 	sound 			$~%refSoundArray%~(~%index%~)
+	OUTER_SET 		position 		= $~%voxPositionArray%~(~%index%~)
+	OUTER_SET  		reference 		= $~%TLKindexArray%~(~%index%~)
+	OUTER_SET 		nextNameIndex 	= nameIndex + 1 
+	OUTER_SPRINT 	nextName 		$~%voxNameArray%~(~%nextNameIndex%~)
+	// Length of array element
+	OUTER_SET 		soundLength 		= STRING_LENGTH ~%sound%~
+	OUTER_SET 		nameLength			= STRING_LENGTH ~%name%~
+	OUTER_SET 		nextNameLength 		= STRING_LENGTH ~%nextName%~
+	OUTER_SET 		minNextNameLength 	= nextNameLength + 1
+	OUTER_SET 		maxNextNameLength 	= nextNameLength + 2
+	// Variables
+	//OUTER_SPRINT nextNameWithUnderscore ~%nextName%_~ // WHY??????
+
+	// Jumps in if next name length is greataer than sound length
+	// Jumps in if next name length is greater
+	// Jumps in if the current name is similar to the next name, e.g. "DEMO" and "DEMOF"
+	ACTION_IF ( (soundLength >= minNextNameLength) 	AND
+				(soundLength <= maxNextNameLength) AND
+				(nameLength < nextNameLength) 	AND
+				(nextNameIndex < nameNumbers) AND
+				(~%nextName%~ STRING_COMPARE_REGEXP ~%name%~ = 0) ) THEN
+	BEGIN	
+		
+		OUTER_SET 		nameIndex = nextNameIndex
+		OUTER_SPRINT 	name 		$~%voxNameArray%~(~%nameIndex%~)
+
+		//TODO: DELETE
+		PRINT ~%name% %nameIndex% iteration: %index%~
+
+		// Creates a new default column for the new soundslot name in CHARSND.2DA
+		APPEND_COL ~CHARSND.2da~ "$ $ %name% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
+		PRETTY_PRINT_2DA
+		// Gets the curent number of columns in CHARSND.2DA
+		COUNT_2DA_COLS maxCols2DA
+		OUTER_SET maxCols = maxCols2DA - 1 
+
+		// Writes the string reference into the correct position
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
+		// "row"---"column"---"required column count"---"value entry"
+		SET_2DA_ENTRY ~%position%~ ~%maxCols%~ ~%maxCols%~ ~%reference%~
+		PRETTY_PRINT_2DA
+
+	// TODO: EXPLAIN REGEX
+	END ELSE ACTION_IF ( ~%sound%~ STRING_COMPARE_REGEXP ~%name%\([a-z]\|[0-9]_?\)~ = 0 ) THEN
+	BEGIN
+		// Writes the string reference into the correct position
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
+		// "row"---"column"---"required column count"---"value entry"
+		SET_2DA_ENTRY ~%position%~ ~%maxCols%~ ~%maxCols%~ ~%reference%~
+		PRETTY_PRINT_2DA
+		// TODO: DELETE
+		PRINT ~IF: %position% %maxCols% %maxCols% %reference%~
+	END ELSE 
+	BEGIN
+		// Gets the new soundslot name
+		OUTER_SET 		nameIndex = nameIndex + 1
+		OUTER_SPRINT 	name $~%voxNameArray%~(~%nameIndex%~)
+		// Creates a new default column for the new soundslot name in CHARSND.2DA
+		APPEND_COL ~CHARSND.2da~ "$ $ %name% -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1"
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
+		PRETTY_PRINT_2DA
+		// Gets the curent number of columns in CHARSND.2DA
+		COUNT_2DA_COLS maxCols2DA
+		OUTER_SET maxCols = maxCols2DA - 1 
+
+		// Writes the string reference into the correct position
+		COPY_EXISTING ~CHARSND.2da~ "override/CHARSND.2da"
+		// "row"---"column"---"required column count"---"value entry"
+		SET_2DA_ENTRY ~%position%~ ~%maxCols%~ ~%maxCols%~ ~%reference%~
+		PRETTY_PRINT_2DA
+		// TODO: DELETE
+		PRINT ~ELSE: %position% %maxCols% %maxCols% %reference%~
+	END
+
+END// End of "FOR"
+
+
+// WRITE INTO M_cdsnd.lua
+// ----------------------
+// Fills the Lua file with the alternative name of the sound slot, 
+// which will then appear in the character creation menu
+OUTER_FOR(index = 0; index < nameNumbers; ++index)
+BEGIN
+	OUTER_SPRINT selectName 	$~%voxSelectNameArray%~(~%index%~)
+	OUTER_SPRINT name 			$~%voxNameArray%~(~%index%~)
+	OUTER_SET selectNameStrref 	= RESOLVE_STR_REF(~%selectName%~)
+	// Check out ingame BGEE.lua file for more information.
+	// filenames_stringrefs['Sound slot header name from CHARSND.2DA'] = {strref for alternative text display, 2}
+	APPEND ~M_cdsnd.lua~ ~filenames_stringrefs['%name%'] = {%selectNameStrref%, 2}~
+END
+
+
+// FOOTER INCLUDES
+// ---------------
+//INCLUDE ~%MOD_FOLDER%/lpa/warnings/CheckSOD.tpa~
+//INCLUDE ~%MOD_FOLDER%/lpa/warnings/CheckIEgames.tpa~
+INCLUDE ~%MOD_FOLDER%/proprietary/Cleanup.tpa~

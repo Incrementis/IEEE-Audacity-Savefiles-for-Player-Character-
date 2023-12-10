@@ -1,0 +1,19 @@
+// Never Forget: Comments can "lie", but code not so much ;P
+// DELETE ALL CREATED FILES!
+// ------------------------- 
+OUTER_SPRINT ~!_deleteArray~ ~%refTextArray%~
+LAM DYN_ARRAY_CLEANUP
+OUTER_SPRINT ~!_deleteArray~ ~%refSoundArray%~
+LAM DYN_ARRAY_CLEANUP
+OUTER_SPRINT ~!_deleteArray~ ~%TLKindexArray%~
+LAM DYN_ARRAY_CLEANUP
+OUTER_SPRINT ~!_deleteArray~ ~%voxNameArray%~
+LAM DYN_ARRAY_CLEANUP
+OUTER_SPRINT ~!_deleteArray~ ~%voxSelectNameArray%~
+LAM DYN_ARRAY_CLEANUP
+OUTER_SPRINT ~!_deleteArray~ ~%voxPositionArray%~
+LAM DYN_ARRAY_CLEANUP
+
+// WeiDU INTERNAL CELANUP!
+// -----------------------
+CLEAR_EVERYTHING
