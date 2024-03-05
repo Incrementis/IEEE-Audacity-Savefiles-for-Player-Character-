@@ -6,7 +6,7 @@ The latest release version can be found [here](https://github.com/Incrementis/IE
 * Windows 11 (tested)
 
 # Audacity
-* The savefiles were created and tested on Audacity version 3.0.0. There is a good chance that they will work on higher versions too, but there is no guarantee.
+* The savefiles were created and tested on Audacity version 3.0.0 and 3.4.2 There is a good chance that they will work on higher versions too, but there is no guarantee.
 
 # Supported Games
 * BG:EE (Baldur's Gate:Enhanced Edition)
@@ -16,7 +16,7 @@ The latest release version can be found [here](https://github.com/Incrementis/IE
 
 # Compatibility
 * [EE Soundset Tool](https://github.com/Gibberlings3/EE_soundset_tool) (Not tested, but IEEE ASfPC uses its “[Unofficial Naming Convention](https://www.gibberlings3.net/forums/topic/34560-adding-soundsets-to-the-ees-using-the-ee-soundset-tool/)”)
-* [IEEE PCVI](https://github.com/Incrementis/IEEE-Player-Character-Voice-Installer-) (If the link appears to be broken, IEEE PCVI is still under development)
+* [IEEE PCVI](https://github.com/Incrementis/IEEE-Player-Character-Voice-Installer-)
 
 # Languages
 * English
