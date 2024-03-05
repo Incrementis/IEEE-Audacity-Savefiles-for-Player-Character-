@@ -49,7 +49,7 @@ REM ---------------------------
 REM https://ss64.com/nt/ren.html
 Set /a idx_counter=1
 REM Reads all WAV files in folder %target_path% and renames them accordingly.
-For %%G in (*.wav) Do ( 
+For %%G in (*.wav *.ogg) Do ( 
 	REM Access the array using a nested loop, since direct access with "!full_names[%idx_counter%]!" doesn't work.
 	For /L %%A in (!idx_counter!,1,!idx_counter!) Do (
 		REN "%%G" "!full_names[%%A]!.wav")
