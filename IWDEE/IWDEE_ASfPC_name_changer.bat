@@ -27,7 +27,7 @@ REM ------------------------
 REM Counter for loop
 Set count=1
 REM Creates and fill the array with non-numeric values concatenated with the base name 
-For %%G in (a 8 9 g_ h_ b c d e f g h 0 k_ l_ i j k 0_ 1_ 2_ 3_ s t u v l m n o p q r w z 1 2 3 4 5 6 7) Do (
+For %%G in (a 8 9 g_ h_ b c d e f g h 0 k_ l_ i j k 0_ 1_ 2_ 3_ s t u v l m w) Do (
 
 	Set full_names[!count!]=!name!%%~G
 	Set /a count+=1
