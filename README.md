@@ -14,6 +14,10 @@ The latest release version can be found [here](https://github.com/Incrementis/IE
 * BG2:EE (Baldur's Gate 2:Enhanced Edition)
 * IWD:EE (Icewind Dale:Enhanced Edition)
 
+# Discussion
+* [Beamdog Forums](https://forums.beamdog.com/discussion/88117/template-ieee-audacity-savefiles-for-player-character)
+* [G3 Forums](https://www.gibberlings3.net/forums/topic/37563-template-ieee-audacity-savefiles-for-player-character/)
+
 # Compatibility
 * [EE Soundset Tool](https://github.com/Gibberlings3/EE_soundset_tool) (Not tested, but IEEE ASfPC uses its “[Unofficial Naming Convention](https://www.gibberlings3.net/forums/topic/34560-adding-soundsets-to-the-ees-using-the-ee-soundset-tool/)”)
 * [IEEE PCVI](https://github.com/Incrementis/IEEE-Player-Character-Voice-Installer-)
