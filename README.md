@@ -27,7 +27,11 @@ The latest release version can be found [here](https://github.com/Incrementis/IE
 * Deutsch
 
 # More Information
-For more detailed information, please visit this [projects wiki](https://github.com/Incrementis/IEEE-Audacity-Savefiles-for-Player-Character-/wiki).
+For more detailed information, please look at the guides:
+* [HowTo Guide English](https://github.com/Incrementis/IEEE-Audacity-Savefiles-for-Player-Character-/blob/main/guides/EN_HowTo.pdf)
+* [HowTo Guide Deutsch](https://github.com/Incrementis/IEEE-Audacity-Savefiles-for-Player-Character-/blob/main/guides/GER_HowTo.pdf)
+
+Please note that the *wiki is no longer maintained.*
 
 # Special Thanks
 Thanks to ["The Gibberlings 3"](https://www.gibberlings3.net/forums/) forum and Discord users who helped me with hints and information:
