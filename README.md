@@ -6,7 +6,7 @@ The latest release version can be found [here](https://github.com/Incrementis/IE
 * Windows 11 (tested)
 
 # Audacity
-* The savefiles were created and tested on Audacity version 3.0.0 and 3.4.2 There is a good chance that they will work on higher versions too, but there is no guarantee.
+* The savefiles were created and tested on Audacity version 3.7.3. There is a good chance that they will work on higher versions too, but there is no guarantee.
 
 # Supported Games
 * BG:EE (Baldur's Gate:Enhanced Edition)
